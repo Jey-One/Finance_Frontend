@@ -153,7 +153,6 @@ export default {
       drawer: false,
       dialog:false,
       activeBtn:0,
-      isLogin: false,
       user: 
       {   
         id : "",
