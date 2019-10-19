@@ -24,7 +24,7 @@
 
         </template>
         <template>
-          <v-list-tile :to="{name:'home'}">
+          <v-list-tile :to="{name:'letras'}">
             <v-list-tile-action style="color:black;">
               <v-icon>table_chart</v-icon>
             </v-list-tile-action>
