@@ -130,7 +130,7 @@
   </v-dialog>
 
     <v-content style="background:white;">
-      <v-container fluid fill-height>
+      <v-container fluid fill-height style="width:70vw;background:white;">
         <v-slide-y-transition mode="out-in">
           <router-view />
         </v-slide-y-transition>
