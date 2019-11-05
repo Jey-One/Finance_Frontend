@@ -1,7 +1,7 @@
 <template>
 <v-layout text-xs-center wrapv-layout >
     <v-flex>
-        <h1 class="display-2 font-weight-bold mb-3">Descuento Por Letras</h1>
+        <h3 class="display-1 font-weight-bold mb-3">Descuento Por Letras</h3>
 
         <v-flex xs12 sm12 md12>
             <v-text-field v-model="Descripcion" label="Breve Descripcion" color="#000000"></v-text-field>
@@ -11,33 +11,30 @@
             <v-select v-model="TipoTasa" :items="TipoTasaOperacion" label="Elige el tipo de Tasa" color="#000000"></v-select>
         </v-flex>
         
-        <v-expansion-panel dark>
-
-            <v-expansion-panel-content>
-                <div slot="header"> Datos de la Letra </div>
-                <v-card color="#2196F3">
+        <v-expansion-panel>
+            <v-expansion-panel-content style="background:#454545;color:white">
+                <div slot="header" > Datos de la Letra </div>
+                <v-card>
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
-
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12 >
-
+                                <v-flex xs12 sm12 md12 style="display:flex;">
                                    
                                     <v-menu v-model="menu1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                                         <template v-slot:activator="{ on }">
-                                            <v-text-field v-model="FechaGiro" label="Fecha de Giro" prepend-icon="event" readonly v-on="on" color="#000000"></v-text-field>
+                                            <v-text-field v-model="FechaGiro" label="Fecha de Giro" readonly v-on="on" color="#000000"></v-text-field>
                                         </template>
                                         <v-date-picker v-model="FechaGiro" @input="menu1 = false" color="#0008FF"></v-date-picker>
                                         
                                     </v-menu>
 
                                 
-                                    <v-tooltip bottom>
+                                    <v-tooltip bottom >
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2" color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Es aquella fecha, en la que se origina el instrumento financiero</span>
@@ -52,10 +49,10 @@
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12s style="display:flex;">
                                     <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                                         <template v-slot:activator="{ on }">
-                                            <v-text-field v-model="FechaVencimiento" label="Fecha de Vencimiento" prepend-icon="event" readonly v-on="on" color="#000000"></v-text-field>
+                                            <v-text-field v-model="FechaVencimiento" label="Fecha de Vencimiento" readonly v-on="on" color="#000000"></v-text-field>
                                         </template>
                                         <v-date-picker v-model="FechaVencimiento" @input="menu2 = false" color="#0008FF"></v-date-picker>
                                     </v-menu>
@@ -63,7 +60,7 @@
                                     <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Es aquella fecha en la que vencerá el compromiso originado por el instrumento financiero</span>
@@ -81,13 +78,13 @@
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12 style="display:flex;">
                                     <v-text-field type="number" v-model="ValorNominal" label="Valor Nominal" color="#000000"></v-text-field>
 
                                     <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon  small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Llamado también Valor Facial, es el valor que toma el instrumento financiero en la fecha de vencimiento,</span>
@@ -103,13 +100,13 @@
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12 style="display:flex;">
                                     <v-text-field type="number" v-model="Retencion" label="Retención" color="#000000"></v-text-field>
 
                                     <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Es retenido por el acreedor al momento del descuento, y que usualmente sirve como garantía colateral de la operación.</span>
@@ -127,22 +124,22 @@
                 </v-card>
             </v-expansion-panel-content>
 
-            <v-expansion-panel-content>
+            <v-expansion-panel-content style="background:#454545;color:white">
                 <div slot="header"> Tasa y Plazo </div>
-                <v-card color="#2196F3">
+                <v-card >
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
                                     <v-select v-model="DiasPorAño" :items="Dias" label="Dias por Año" color="#000000"></v-select>
 
                                     <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Aquí deberá ser muy cauteloso y elegir el número de días con los que la Legislación del Estado</span>
@@ -153,10 +150,10 @@
 
                                 </v-flex>
 
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
                                     <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                                         <template v-slot:activator="{ on }">
-                                            <v-text-field v-model="FechaDescuento" label="Fecha de Descuento" prepend-icon="event" readonly v-on="on" color="#000000"></v-text-field>
+                                            <v-text-field v-model="FechaDescuento" label="Fecha de Descuento" readonly v-on="on" color="#000000"></v-text-field>
                                         </template>
                                         <v-date-picker v-model="FechaDescuento" @input="menu3 = false" color="#0008FF"></v-date-picker>
                                     </v-menu>
@@ -164,7 +161,7 @@
                                     <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Es aquella fecha en la que se descontará el instrumento financiero. En ese momento el acreedor </span>
@@ -183,16 +180,18 @@
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
                                     <v-select v-model="PlazoTasa" :items="Plazo" label="Plazo de Tasa" color="#000000"></v-select>
-                                    <div v-if="PlazoTasa ==='Especial'" >
+                                    <div v-if="PlazoTasa ==='Especial'"  class="ml-4">
+                                      
                                          <v-text-field type="number" v-model="ValorEspecialPer" label="Valor Especial" color="#000000"></v-text-field>
+                                    
                                     </div>
 
                                     <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Representa al tiempo en el que se expresa el plazo de la tasa de interés dada como dato.</span>
@@ -213,13 +212,13 @@
                                 <v-row>
                                 <v-col>
                                 <template v-if="TipoTasa ==='Nominal'">
-                                    <v-flex xs12 sm12 md12>
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
                                         <v-text-field type="number" v-model="PorcentajeTasaNominal" label="Tasa Nominal" color="#000000"></v-text-field>
 
                                         <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">
                                         <v-layout align-center justify-space-around>
-                                        <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                        <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                         </v-layout>
                                         </template>
                                         <span>Es aquella que se paga por un préstamo o una cuenta de ahorros y no se suma al capital,</span>
@@ -229,16 +228,16 @@
                                         </v-flex>
 
 
-                                    <v-flex xs12 sm12 md12>
-                                        <v-select v-model="PeriodoCapitalizacion" :items="Plazo" label="Periodo de Capitalizacion" color="#000000"></v-select>
-                                        <div v-if="PeriodoCapitalizacion ==='Especial'" >
-                                            <v-text-field type="number" v-model="ValorEspecialCap" label="Valor Especial" color="#000000"></v-text-field>
+                                    <v-flex xs12 sm12 md12 style="display:flex;">
+                                        <v-select v-model="PeriodoCapitalizacion" :items="Plazo" label="Capitalizacion" color="#000000" style="max-width:180px"></v-select>
+                                        <div v-if="PeriodoCapitalizacion ==='Especial'" class="ml-4">
+                                        <v-text-field type="number" v-model="ValorEspecialCap" label="Valor Especial" color="#000000"></v-text-field>
                                         </div>
 
                                         <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">
                                         <v-layout align-center justify-space-around>
-                                        <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                        <v-icon small class="ml-2"  color="teal darken-2" v-on="on">info</v-icon>
                                         </v-layout>
                                         </template>
                                         <span>Es el periodo de tiempo en el que los intereses generados se convierten en </span>
@@ -256,13 +255,13 @@
                                 <v-row>
                                 <v-col>
                                 <template v-if="TipoTasa ==='Efectiva'">
-                                    <v-flex xs12 sm12 md12>
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
                                         <v-text-field type="number" v-model="PorcentajeTasaEfectiva" label="Tasa Efectiva" color="#000000"></v-text-field>
 
                                         <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">
                                         <v-layout align-center justify-space-around>
-                                        <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                        <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                         </v-layout>
                                         </template>
                                         <span>Es la tasa de interés efectiva con la que se compensará al acreedor.</span>                             
@@ -281,22 +280,22 @@
                 </v-card>
             </v-expansion-panel-content>
 
-            <v-expansion-panel-content>
+            <v-expansion-panel-content style="background:#454545;color:white">
                 <div slot="header"> Costes/Gastos Iniciales </div>
-                <v-card color="#2196F3">
+                <v-card >
                     <v-card-text class="px-4">
                         <v-container grid-list-md>
                             <v-layout wrap>
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
                                     <v-select v-model="MotivoInicial" :items="Motivo" label="Motivo" color="#000000"></v-select>
 
                                     <v-tooltip right>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Estos corresponden a los costes o gastos que deben pagarse al acreedor para realizar la operación, y que se descontarán del Valor Neto</span>                             
@@ -312,13 +311,13 @@
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
-                                    <v-select v-model="TipoVI" :items="TipoValor" label="Valor Expresado en: " color="#000000"></v-select>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
+                                    <v-select v-model="TipoVI" :items="TipoValor" label="Valor Expresado en: " color="#000000" ></v-select>
 
                                     <v-tooltip right>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Ingresar el monto en efectivo o en porcentaje, segun sea el caso</span>                             
@@ -332,7 +331,7 @@
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
                                 <v-text-field type="number" v-model="ValorCosteI" label="Valor: " color="#000000"></v-text-field>
                                 </v-flex>
                                 </v-col>
@@ -373,22 +372,22 @@
                 </v-card>
             </v-expansion-panel-content>
 
-            <v-expansion-panel-content>
+            <v-expansion-panel-content style="background:#454545;color:white">
                 <div slot="header"> Costes/Gastos Finales </div>
-                <v-card color="#2196F3">
+                <v-card >
                     <v-card-text class="px-4">
                         <v-container grid-list-md>
                             <v-layout wrap>
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
                                     <v-select v-model="MotivoFinal" :items="Motivo" label="Motivo" color="#000000"></v-select>
 
                                     <v-tooltip right>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Estos corresponden a los costes o gastos que deben pagarse al acreedor al finalizar la operación, y que se agregarán al Valor Nominal.</span>                             
@@ -405,13 +404,13 @@
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
                                     <v-select v-model="TipoVF" :items="TipoValor" label="Valor Expresado en: " color="#000000"></v-select>
 
                                     <v-tooltip right>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
-                                    <v-icon medium color="teal darken-2" v-on="on">info</v-icon>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
                                     </v-layout>
                                     </template>
                                     <span>Ingresar el monto en efectivo o en porcentaje, segun sea el caso</span>                             
@@ -464,6 +463,22 @@
             </v-expansion-panel-content>
             
         </v-expansion-panel>
+        <v-btn  dark class="btn btn-primary mt-5" @click="calcular">Calcular</v-btn>
+
+        <div v-if="res" style="width:100%;display:flex;border-radius:10px;padding: 20px 40px;background:#454545;color:white;margin-top:40px" >
+            <div style="width:50%; display:flex;flex-direction:column;text-align:start;" class="mr-4 mt-4">
+                <div style="display:flex; justify-content:space-between"><p>Números de días transcurridos :</p> <p>{{diasTrans}}</p></div>
+                <div style="display:flex; justify-content:space-between"> <p>Tasa Efectiva  : </p> <p>{{tasaEfectiva}}%</p></div>  
+                <div style="display:flex; justify-content:space-between">  <p>Tasa de descuento:</p> <p>{{tasaDescuento}}%</p></div>
+                <div style="display:flex; justify-content:space-between">  <p>Soles de descuento :</p> <p>{{solesDescuento}}</p></div>
+             </div>
+            <div style="width:50%; display:flex;flex-direction:column;text-align:start" class="ml-4 mt-4">
+               <div style="display:flex; justify-content:space-between">  <p>Valor neto:</p> <p>{{valorNeto}}</p></div>
+               <div style="display:flex; justify-content:space-between">  <p>Valor total a recibir :</p>  <p>{{valorRecibir}}</p></div>
+               <div style="display:flex; justify-content:space-between">  <p>Valor total a entregar :</p> <p>{{valorEntregar}}</p></div>
+                <div style="display:flex; justify-content:space-between"> <p>TCEA :</p> <p> {{tcea}}%</p></div>
+            </div>
+        </div>
     </v-flex>
 </v-layout>
 </template>
@@ -477,24 +492,32 @@ export default {
       menu1: false,
       menu2: false,
       menu3: false,
-      
+      res:false,
+      diasTrans: 0,
+      tasaEfectiva: 0,
+      tasaDescuento:0,
+      solesDescuento:0,
+      valorNeto:0,
+      valorRecibir: 0,
+      valorEntregar:0,
+      tcea:0,
       TipoTasaOperacion:[
           {text: "Nominal", value: 'Nominal'},
           {text: "Efectiva", value: 'Efectiva'},
       ],
       Dias:[
-          {text: "360", value: '360'},
-          {text: "365", value: '365'},
+          {text: "360", value: 360},
+          {text: "365", value: 365},
       ],
       Plazo:[
-          {text: "Diario", value: '1'},
-          {text: "Quincenal", value: '15'},
-          {text: "Mensual", value: '30'},
-          {text: "Bimestral", value: '60'},
-          {text: "Trimestral", value: '90'},
-          {text: "Cuatrimestral", value: '120'},
-          {text: "Semestral", value: '180'},
-          {text: "Anual", value: '360'},
+          {text: "Diario", value: 1},
+          {text: "Quincenal", value: 15},
+          {text: "Mensual", value: 30},
+          {text: "Bimestral", value: 60},
+          {text: "Trimestral", value: 90},
+          {text: "Cuatrimestral", value: 120},
+          {text: "Semestral", value: 180},
+          {text: "Anual", value: 360},
           {text: "Especial", value: 'Especial'},
       ],
       Motivo:[
@@ -567,38 +590,96 @@ export default {
 
     };
   },
-  computed: {
-  },
+  computed:{
 
-  watch: {
+  },
+  watch:{
   },
 
   created() {
   },
-  
   methods: {
-      agregarCosteInicial( motivo1,valor1) {
-          this.CInicial.push({
-              motivo: motivo1,
-              valor: valor1
-            }); 
-        },
+    agregarCosteInicial( motivo1,valor1) {
+        this.CInicial.push({
+            motivo: motivo1,
+            valor: valor1
+        }); 
+    },
 
     agregarCosteFinal( motivo1,valor1) {
-          this.CFinal.push({
-              motivo: motivo1,
-              valor: valor1
-            }); 
-        },
+        this.CFinal.push({
+            motivo: motivo1,
+            valor: valor1
+        }); 
+     },
     
     eliminarDetalle(arr, item) {
-            var i = arr.indexOf(item);
-            if (i !== -1) {
-                arr.splice(i, 1);
+        var i = arr.indexOf(item);
+        if (i !== -1) {
+            arr.splice(i, 1);
+        }
+    },
+    calcular()
+    {
+        let me = this;
+        // Falta arreglar la fecha 
+        var diasDif = 5;
+        var tasa = 0;
+        var tasaDes = 0;
+        var neto = 0;
+        var totalR = 0;
+        var totalE = 0;
+        var tcea = 0;
+        var solesDes = 0;
+        if(me.TipoTasa == "Nominal" )
+        {
+            if(me.PlazoTasa != "Especial" ){
+                if(me.PeriodoCapitalizacion != "Especial")
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.PeriodoCapitalizacion))),diasDif) -1;
+                if(me.PeriodoCapitalizacion == "Especial")
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.ValorEspecialCap))),diasDif) -1;
+            }    
+            if(me.PlazoTasa == "Especial"){
+                if(me.PeriodoCapitalizacion != "Especial")
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.PeriodoCapitalizacion))),diasDif) -1;
+                if(me.PeriodoCapitalizacion == "Especial")
+                     tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.ValorEspecialCap))),diasDif) -1;
             }
-        },
+        }
+        else{
+            if(me.TipoTasa == "Efectiva" )
+            {
+                if(me.PlazoTasa != "Especial")
+                    tasa = Math.pow((1+(me.PorcentajeTasaEfectiva/100)),(diasDif/me.PlazoTasa))-1;
+                if(me.PlazoTasa == "Especial")
+                    tasa = Math.pow((1+(me.PorcentajeTasaEfectiva/100)),(diasDif/me.ValorEspecialPer))-1;
+            }
+        }
+        tasaDes = (tasa/(1+tasa))
+        neto = me.ValorNominal*(1-tasaDes);
+        totalR = neto - me.Retencion;
+        me.CInicial.forEach(element => {
+            totalR -= element.valor;
+        });
+        totalE = me.ValorNominal - me.Retencion;
+        me.CFinal.forEach(element => {
+            totalE += element.valor; 
+        });
 
+        tcea = Math.pow((totalE/totalR),(me.DiasPorAño/diasDif))- 1;
+        solesDes = me.ValorNominal * tasaDes;
 
+        me.tcea = tcea*100;
+        me.tasaDescuento = tasaDes*100;
+        me.diasTrans = diasDif;
+        me.tasaEfectiva = tasa*100;
+        me.solesDescuento = solesDes;
+        me.valorRecibir = totalR;
+        me.valorEntregar = totalE;
+        me.valorNeto = neto;
+
+        me.res = true;
+    },
   }
 };
 </script>
