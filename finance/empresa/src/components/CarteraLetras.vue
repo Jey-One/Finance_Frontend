@@ -641,32 +641,17 @@
         <v-btn  dark class="btn btn-primary mt-5" @click="calcular">Calcular</v-btn>
 
         <div v-if="res" style="width:100%;display:flex;border-radius:10px;padding: 20px 40px;background:#454545;color:white;margin-top:40px" >
-            <div style="width:50%; display:flex;flex-direction:column;text-align:start;" class="mr-4 mt-4">
-                <div style="display:flex; justify-content:space-between"><p>Números de días transcurridos :</p> <p>{{diasTrans}}</p></div>
-                <div style="display:flex; justify-content:space-between"> <p>Tasa Efectiva  : </p> <p>{{tasaEfectiva}}%</p></div>  
-                <div style="display:flex; justify-content:space-between">  <p>Tasa de descuento:</p> <p>{{tasaDescuento}}%</p></div>
-                <div style="display:flex; justify-content:space-between">  <p>Soles de descuento :</p> <p>{{solesDescuento}}</p></div>
-             </div>
-            <div style="width:50%; display:flex;flex-direction:column;text-align:start" class="ml-4 mt-4">
-               <div style="display:flex; justify-content:space-between">  <p>Valor neto:</p> <p>{{valorNeto}}</p></div>
-               <div style="display:flex; justify-content:space-between">  <p>Valor total a recibir :</p>  <p>{{valorRecibir}}</p></div>
-               <div style="display:flex; justify-content:space-between">  <p>Valor total a entregar :</p> <p>{{valorEntregar}}</p></div>
-                <div style="display:flex; justify-content:space-between"> <p>TCEA :</p> <p> {{tcea}}%</p></div>
-            </div>
 
             <div style="width:50%; display:flex;flex-direction:column;text-align:start" class="ml-4 mt-4">
                 <ul>
                    <div v-for="(index) in arregloLetras" :key="index">
-                       <div> <p>Valor total a recibir :</p> <p>{{index.valorNeto}}</p> </div>
+                       <div style="display:flex; justify-content:space-between">  <p>Valor neto:</p> <p>{{index.valorNeto}}</p></div>
+                       <div style="display:flex; justify-content:space-between">  <p>Valor total a recibir :</p>  <p>{{index.valorRecibir}}</p></div>
+                       <div style="display:flex; justify-content:space-between">  <p>Valor total a entregar :</p> <p>{{index.valorEntregar}}</p></div>
+                       <div style="display:flex; justify-content:space-between">  <p>TCEA :</p> <p> {{index.tcea}}%</p></div>
                    </div>
-                    
-
                 </ul>
-
             </div>
-
-
-
         </div>
     </v-flex>
 </v-layout>
@@ -780,7 +765,8 @@ export default {
       valor: "",
 
       TasaPlazoActivo: "activado",
-      arregloLetras: []
+      arregloLetras: [],
+      NumeroL: 0
 
     };
   },
@@ -827,6 +813,7 @@ export default {
         let me = this;
         // Falta arreglar la fecha 
         me.TasaPlazoActivo = 'desactivado'
+        me.NumeroL += 1
         var diasDif = moment(me.FechaVencimiento).diff(moment(me.FechaDescuento), "days")
         var tasa = 0;
         var tasaDes = 0;
@@ -839,15 +826,15 @@ export default {
         {
             if(me.PlazoTasa != "Especial" ){
                 if(me.PeriodoCapitalizacion != "Especial")
-                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.PeriodoCapitalizacion))),diasDif) -1;
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.PeriodoCapitalizacion))),(diasDif/me.PeriodoCapitalizacion))-1;
                 if(me.PeriodoCapitalizacion == "Especial")
-                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.ValorEspecialCap))),diasDif) -1;
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.ValorEspecialCap))),(diasDif/me.ValorEspecialCap)) -1;
             }    
             if(me.PlazoTasa == "Especial"){
                 if(me.PeriodoCapitalizacion != "Especial")
-                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.PeriodoCapitalizacion))),diasDif) -1;
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.PeriodoCapitalizacion))),(diasDif/me.PeriodoCapitalizacion)) -1;
                 if(me.PeriodoCapitalizacion == "Especial")
-                     tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.ValorEspecialCap))),diasDif) -1;
+                     tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.ValorEspecialCap))),(diasDif/me.ValorEspecialCap)) -1;
             }
         }
         else{
