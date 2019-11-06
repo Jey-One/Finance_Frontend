@@ -3,6 +3,7 @@
     <v-flex>
         <h3 class="display-1 font-weight-bold mb-3">Descuento Por Letras</h3>
 
+        <template v-if="TasaPlazoActivo ==='activado'">
         <v-flex xs12 sm12 md12>
             <v-text-field v-model="Descripcion" label="Breve Descripcion" color="#000000"></v-text-field>
         </v-flex>
@@ -10,120 +11,19 @@
         <v-flex xs12 sm12 md12>
             <v-select v-model="TipoTasa" :items="TipoTasaOperacion" label="Elige el tipo de Tasa" color="#000000"></v-select>
         </v-flex>
+        </template>
+
+        <template v-if="TasaPlazoActivo ==='desactivado'">
+        <v-flex xs12 sm12 md12>
+            <v-text-field v-model="Descripcion" label="Breve Descripcion" color="#000000" disabled></v-text-field>
+        </v-flex>
+
+        <v-flex xs12 sm12 md12>
+            <v-select v-model="TipoTasa" :items="TipoTasaOperacion" label="Elige el tipo de Tasa" color="#000000" disabled></v-select>
+        </v-flex>
+        </template>
         
         <v-expansion-panel>
-            <v-expansion-panel-content style="background:#454545;color:white">
-                <div slot="header" > Datos de la Letra </div>
-                <v-card>
-                    <v-card-text>
-                        <v-container grid-list-md>
-                            <v-layout wrap>
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12 style="display:flex;">
-                                   
-                                    <v-menu v-model="menu1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field v-model="FechaGiro" label="Fecha de Giro" readonly v-on="on" color="#000000"></v-text-field>
-                                        </template>
-                                        <v-date-picker v-model="FechaGiro" @input="menu1 = false" color="#0008FF"></v-date-picker>
-                                        
-                                    </v-menu>
-
-                                
-                                    <v-tooltip bottom >
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2" color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Es aquella fecha, en la que se origina el instrumento financiero</span>
-                                    </v-tooltip>
-
-
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-                                
-                                <v-spacer></v-spacer>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12s style="display:flex;">
-                                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field v-model="FechaVencimiento" label="Fecha de Vencimiento" readonly v-on="on" color="#000000"></v-text-field>
-                                        </template>
-                                        <v-date-picker v-model="FechaVencimiento" @input="menu2 = false" color="#0008FF"></v-date-picker>
-                                    </v-menu>
-
-                                    <v-tooltip bottom>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Es aquella fecha en la que vencerá el compromiso originado por el instrumento financiero</span>
-                                    <v-spacer></v-spacer>
-                                    <span>En ese momento el deudor deberá honrar su palabra cancelando el documento.</span>
-                                    </v-tooltip>
-
-
-                                    
-                                </v-flex> 
-                                </v-col>
-                                </v-row>
-                                
-                                <v-spacer></v-spacer>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12 style="display:flex;">
-                                    <v-text-field type="number" v-model="ValorNominal" label="Valor Nominal" color="#000000"></v-text-field>
-
-                                    <v-tooltip bottom>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon  small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Llamado también Valor Facial, es el valor que toma el instrumento financiero en la fecha de vencimiento,</span>
-                                    <v-spacer></v-spacer>
-                                    <span> y que usualmente se imprime/escribe sobre el mismo.</span>
-                                    </v-tooltip>
-
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-
-                                <v-spacer></v-spacer>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12 style="display:flex;">
-                                    <v-text-field type="number" v-model="Retencion" label="Retención" color="#000000"></v-text-field>
-
-                                    <v-tooltip bottom>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Es retenido por el acreedor al momento del descuento, y que usualmente sirve como garantía colateral de la operación.</span>
-                                    </v-tooltip>
-
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-
-                                
-
-                            </v-layout>
-                        </v-container>
-                    </v-card-text>
-                </v-card>
-            </v-expansion-panel-content>
-
             <v-expansion-panel-content style="background:#454545;color:white">
                 <div slot="header"> Tasa y Plazo </div>
                 <v-card >
@@ -131,8 +31,10 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
 
+                                <template v-if="TasaPlazoActivo ==='activado'">
                                 <v-row>
                                 <v-col>
+                                
                                 <v-flex xs12 sm12 md12  style="display:flex;">
                                     <v-select v-model="DiasPorAño" :items="Dias" label="Dias por Año" color="#000000"></v-select>
 
@@ -276,6 +178,274 @@
                                 </template>
                                 </v-col>
                                 </v-row>
+                                </template>
+
+
+
+                                <template v-if="TasaPlazoActivo ==='desactivado'">
+                                <v-row>
+                                <v-col>
+                                
+                                <v-flex xs12 sm12 md12  style="display:flex;">
+                                    <v-select v-model="DiasPorAño" :items="Dias" label="Dias por Año" color="#000000" disabled></v-select>
+
+                                    <v-tooltip bottom>
+                                    <template v-slot:activator="{ on }">
+                                    <v-layout align-center justify-space-around>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                    </v-layout>
+                                    </template>
+                                    <span>Aquí deberá ser muy cauteloso y elegir el número de días con los que la Legislación del Estado</span>
+                                    <v-spacer></v-spacer>
+                                    <span>donde se descuenta el instrumento, idealiza al año, pudiendo ser un año de 360 o de 365 días</span>
+                                    </v-tooltip>
+
+
+                                </v-flex>
+
+                                <v-flex xs12 sm12 md12  style="display:flex;">
+                                    <v-menu v-model="menu3" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field v-model="FechaDescuento" label="Fecha de Descuento" readonly v-on="on" color="#000000" disabled></v-text-field>
+                                        </template>
+                                        <v-date-picker v-model="FechaDescuento" @input="menu3 = false" color="#0008FF"></v-date-picker>
+                                    </v-menu>
+
+                                    <v-tooltip bottom>
+                                    <template v-slot:activator="{ on }">
+                                    <v-layout align-center justify-space-around>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                    </v-layout>
+                                    </template>
+                                    <span>Es aquella fecha en la que se descontará el instrumento financiero. En ese momento el acreedor </span>
+                                    <v-spacer></v-spacer>
+                                    <span>calculará los intereses que se producirán en el tiempo comprendido entre la fecha de descuento y </span>
+                                    <v-spacer></v-spacer>
+                                    <span> la fecha de vencimiento y procederá a cobrar por adelantado dichos intereses</span>                                   
+                                    </v-tooltip>
+
+
+                                </v-flex>
+                                </v-col>
+                                </v-row>
+
+                                <v-spacer></v-spacer>
+
+                                <v-row>
+                                <v-col>
+                                <v-flex xs12 sm12 md12  style="display:flex;">
+                                    <v-select v-model="PlazoTasa" :items="Plazo" label="Plazo de Tasa" color="#000000" disabled></v-select>
+
+                                    <v-tooltip bottom>
+                                    <template v-slot:activator="{ on }">
+                                    <v-layout align-center justify-space-around>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                    </v-layout>
+                                    </template>
+                                    <span>Representa al tiempo en el que se expresa el plazo de la tasa de interés dada como dato.</span>
+                                    <v-spacer></v-spacer>
+                                    <span>Por el contrario, si le informan que se utilizará en su contrato una Tasa Nominal a 75 días (T.N.75d.),</span>
+                                    <v-spacer></v-spacer>
+                                    <span> se tratará de un plazo especial, entonces deberá seleccionar la opción: Especial</span>                                   
+                                    </v-tooltip>
+
+
+
+                                </v-flex>
+                                
+                                <v-flex>
+                                <div v-if="PlazoTasa ==='Especial'">
+                                    <v-text-field type="number" v-model="ValorEspecialPer" label="Valor Especial" color="#000000" disabled></v-text-field>
+                                </div>
+                                </v-flex>
+
+
+                                </v-col>
+                                </v-row>
+
+                                <v-spacer></v-spacer>
+
+                                <v-row>
+                                <v-col>
+                                <template v-if="TipoTasa ==='Nominal'">
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
+                                        <v-text-field type="number" v-model="PorcentajeTasaNominal" label="Tasa Nominal" color="#000000" disabled></v-text-field>
+
+                                        <v-tooltip bottom>
+                                        <template v-slot:activator="{ on }">
+                                        <v-layout align-center justify-space-around>
+                                        <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                        </v-layout>
+                                        </template>
+                                        <span>Es aquella que se paga por un préstamo o una cuenta de ahorros y no se suma al capital,</span>
+                                        <v-spacer></v-spacer>
+                                        <span> es expresada en términos anuales con una frecuencia de tiempo de pago</span>                             
+                                        </v-tooltip>
+                                        </v-flex>
+
+
+                                    <v-flex xs12 sm12 md12 style="display:flex;">
+                                        <v-select v-model="PeriodoCapitalizacion" :items="Plazo" label="Capitalizacion" color="#000000" style="max-width:180px" disabled></v-select>
+                                        
+                                        <v-tooltip bottom>
+                                        <template v-slot:activator="{ on }">
+                                        <v-layout align-center justify-space-around>
+                                        <v-icon small class="ml-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                        </v-layout>
+                                        </template>
+                                        <span>Es el periodo de tiempo en el que los intereses generados se convierten en </span>
+                                        <v-spacer></v-spacer>
+                                        <span>nuevo capital o deuda para el siguiente periodo de pago o cobranza.</span>                                
+                                        </v-tooltip>
+
+                                    </v-flex>
+
+                                    <v-flex>
+                                        <div v-if="PeriodoCapitalizacion ==='Especial'">
+                                            <v-text-field type="number" v-model="ValorEspecialCap" label="Valor Especial" color="#000000" disabled></v-text-field>
+                                        </div>
+                                    </v-flex>
+
+                                </template>
+                                </v-col>
+                                </v-row>
+
+                                <v-row>
+                                <v-col>
+                                <template v-if="TipoTasa ==='Efectiva'">
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
+                                        <v-text-field type="number" v-model="PorcentajeTasaEfectiva" label="Tasa Efectiva" color="#000000" disabled></v-text-field>
+
+                                        <v-tooltip bottom>
+                                        <template v-slot:activator="{ on }">
+                                        <v-layout align-center justify-space-around>
+                                        <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                        </v-layout>
+                                        </template>
+                                        <span>Es la tasa de interés efectiva con la que se compensará al acreedor.</span>                             
+                                        </v-tooltip>
+
+                                    </v-flex>
+                                </template>
+                                </v-col>
+                                </v-row>
+                                </template>
+
+
+
+
+
+                            </v-layout>
+                        </v-container>
+                    </v-card-text>
+                </v-card>
+            </v-expansion-panel-content>
+
+            <v-expansion-panel-content style="background:#454545;color:white">
+                <div slot="header" > Datos de la Letra </div>
+                <v-card>
+                    <v-card-text>
+                        <v-container grid-list-md>
+                            <v-layout wrap>
+                                <v-row>
+                                <v-col>
+                                <v-flex xs12 sm12 md12 style="display:flex;">
+                                   
+                                    <v-menu v-model="menu1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field v-model="FechaGiro" label="Fecha de Giro" readonly v-on="on" color="#000000"></v-text-field>
+                                        </template>
+                                        <v-date-picker v-model="FechaGiro" @input="menu1 = false" color="#0008FF"></v-date-picker>
+                                        
+                                    </v-menu>
+
+                                
+                                    <v-tooltip bottom >
+                                    <template v-slot:activator="{ on }">
+                                    <v-layout align-center justify-space-around>
+                                    <v-icon small class="ml-2 mr-2" color="teal darken-2" v-on="on">info</v-icon>
+                                    </v-layout>
+                                    </template>
+                                    <span>Es aquella fecha, en la que se origina el instrumento financiero</span>
+                                    </v-tooltip>
+
+
+                                </v-flex>
+                                </v-col>
+                                </v-row>
+                                
+                                <v-spacer></v-spacer>
+
+                                <v-row>
+                                <v-col>
+                                <v-flex xs12 sm12 md12s style="display:flex;">
+                                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field v-model="FechaVencimiento" label="Fecha de Vencimiento" readonly v-on="on" color="#000000"></v-text-field>
+                                        </template>
+                                        <v-date-picker v-model="FechaVencimiento" @input="menu2 = false" color="#0008FF"></v-date-picker>
+                                    </v-menu>
+
+                                    <v-tooltip bottom>
+                                    <template v-slot:activator="{ on }">
+                                    <v-layout align-center justify-space-around>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                    </v-layout>
+                                    </template>
+                                    <span>Es aquella fecha en la que vencerá el compromiso originado por el instrumento financiero</span>
+                                    <v-spacer></v-spacer>
+                                    <span>En ese momento el deudor deberá honrar su palabra cancelando el documento.</span>
+                                    </v-tooltip>
+
+
+                                    
+                                </v-flex> 
+                                </v-col>
+                                </v-row>
+                                
+                                <v-spacer></v-spacer>
+
+                                <v-row>
+                                <v-col>
+                                <v-flex xs12 sm12 md12 style="display:flex;">
+                                    <v-text-field type="number" v-model="ValorNominal" label="Valor Nominal" color="#000000"></v-text-field>
+
+                                    <v-tooltip bottom>
+                                    <template v-slot:activator="{ on }">
+                                    <v-layout align-center justify-space-around>
+                                    <v-icon  small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                    </v-layout>
+                                    </template>
+                                    <span>Llamado también Valor Facial, es el valor que toma el instrumento financiero en la fecha de vencimiento,</span>
+                                    <v-spacer></v-spacer>
+                                    <span> y que usualmente se imprime/escribe sobre el mismo.</span>
+                                    </v-tooltip>
+
+                                </v-flex>
+                                </v-col>
+                                </v-row>
+
+                                <v-spacer></v-spacer>
+
+                                <v-row>
+                                <v-col>
+                                <v-flex xs12 sm12 md12 style="display:flex;">
+                                    <v-text-field type="number" v-model="Retencion" label="Retención" color="#000000"></v-text-field>
+
+                                    <v-tooltip bottom>
+                                    <template v-slot:activator="{ on }">
+                                    <v-layout align-center justify-space-around>
+                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                    </v-layout>
+                                    </template>
+                                    <span>Es retenido por el acreedor al momento del descuento, y que usualmente sirve como garantía colateral de la operación.</span>
+                                    </v-tooltip>
+
+                                </v-flex>
+                                </v-col>
+                                </v-row>
+
+                                
 
                             </v-layout>
                         </v-container>
@@ -483,6 +653,20 @@
                <div style="display:flex; justify-content:space-between">  <p>Valor total a entregar :</p> <p>{{valorEntregar}}</p></div>
                 <div style="display:flex; justify-content:space-between"> <p>TCEA :</p> <p> {{tcea}}%</p></div>
             </div>
+
+            <div style="width:50%; display:flex;flex-direction:column;text-align:start" class="ml-4 mt-4">
+                <ul>
+                   <div v-for="(index) in arregloLetras" :key="index">
+                       <div> <p>Valor total a recibir :</p> <p>{{index.valorNeto}}</p> </div>
+                   </div>
+                    
+
+                </ul>
+
+            </div>
+
+
+
         </div>
     </v-flex>
 </v-layout>
@@ -595,6 +779,9 @@ export default {
       motivo: "",
       valor: "",
 
+      TasaPlazoActivo: "activado",
+      arregloLetras: []
+
     };
   },
   computed:{
@@ -619,6 +806,15 @@ export default {
             valor: valor1
         }); 
      },
+
+     agregarLetras(tcea,totalR,totalE,neto){
+         this.arregloLetras.push({
+             valorNeto:neto,
+             valorRecibir: totalR,
+             valorEntregar:totalE,
+             tcea:tcea
+         });
+     },
     
     eliminarDetalle(arr, item) {
         var i = arr.indexOf(item);
@@ -630,6 +826,7 @@ export default {
     {
         let me = this;
         // Falta arreglar la fecha 
+        me.TasaPlazoActivo = 'desactivado'
         var diasDif = moment(me.FechaVencimiento).diff(moment(me.FechaDescuento), "days")
         var tasa = 0;
         var tasaDes = 0;
@@ -685,7 +882,10 @@ export default {
         me.valorEntregar = totalE;
         me.valorNeto = neto;
 
+        this.agregarLetras(me.tcea,me.valorRecibir,me.valorEntregar,me.valorNeto)
+
         me.res = true;
+        
     },
   }
 };

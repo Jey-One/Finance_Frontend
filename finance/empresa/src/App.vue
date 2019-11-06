@@ -31,6 +31,14 @@
             <v-list-tile-title style="color:black;">Descuento por letra</v-list-tile-title>
           </v-list-tile>
         </template>
+        <template>
+          <v-list-tile :to="{name:'carteraLetras'}">
+            <v-list-tile-action style="color:black;">
+              <v-icon>table_chart</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title style="color:black;">Cartera de letras</v-list-tile-title>
+          </v-list-tile>
+        </template>
           <template>
           <v-list-tile @click="LogOut">
             <v-list-tile-action style="color:black;">
