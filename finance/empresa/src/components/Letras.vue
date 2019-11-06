@@ -642,15 +642,15 @@ export default {
         {
             if(me.PlazoTasa != "Especial" ){
                 if(me.PeriodoCapitalizacion != "Especial")
-                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.PeriodoCapitalizacion))),diasDif) -1;
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.PeriodoCapitalizacion))),(diasDif/me.PeriodoCapitalizacion))-1;
                 if(me.PeriodoCapitalizacion == "Especial")
-                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.ValorEspecialCap))),diasDif) -1;
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.PlazoTasa/me.ValorEspecialCap))),(diasDif/me.ValorEspecialCap)) -1;
             }    
             if(me.PlazoTasa == "Especial"){
                 if(me.PeriodoCapitalizacion != "Especial")
-                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.PeriodoCapitalizacion))),diasDif) -1;
+                    tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.PeriodoCapitalizacion))),(diasDif/me.PeriodoCapitalizacion)) -1;
                 if(me.PeriodoCapitalizacion == "Especial")
-                     tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.ValorEspecialCap))),diasDif) -1;
+                     tasa = Math.pow((1+((me.PorcentajeTasaNominal/100)/(me.ValorEspecialPer/me.ValorEspecialCap))),(diasDif/me.ValorEspecialCap)) -1;
             }
         }
         else{
