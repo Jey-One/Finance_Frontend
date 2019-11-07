@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Letras from './components/Letras.vue'
 import CarteraLetras from './components/CarteraLetras.vue'
+import MisLetras from './components/MisLetras.vue'
 
 Vue.use(Router)
 
@@ -24,7 +25,13 @@ export default new Router({
       path: '/carteraLetras',
       name: 'carteraLetras',
       component: CarteraLetras
+    },
+    {
+      path: '/misLetras',
+      name: 'misLetras',
+      component: MisLetras
     }
+
 
   ]
 })
