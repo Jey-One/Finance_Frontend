@@ -15,288 +15,294 @@
                             <div class="subheading">{{person.nombreGirado}}</div>
                         </v-card-text>
                         <v-card-actions>
-                            <v-btn flat color="blue">
-                                <span>Agregrar a la Cartera</span>
+                            <b-button-group>
+                            <v-btn small flat color="blue" @click="agregarCartera(person)">
+                                <span>Agregar</span>
                             </v-btn>
+                            <v-btn small flat color="green">
+                                <span>Editar</span>
+                            </v-btn>
+                            <v-btn small flat color="red" @click="eliminarDetalle(team , person)" >
+                                <v-icon>delete</v-icon>
+                            </v-btn>
+                            </b-button-group>
                         </v-card-actions>
                     </v-card>
                 </v-flex>
             </v-layout>
         </v-container>
-        
-        <v-btn  dark class="btn btn-primary mt-5" @click="calcular">Calcular Cartera</v-btn>
 
-
-      <v-row justify="center">
-      <v-dialog v-model="dialog" max-width="700px">
-      <template v-slot:activator="{ on }">
-        <v-btn  dark class="btn btn-primary mt-5" @click="agregarLetra" v-on="on">Agregar Letra</v-btn>
-      </template>
-      <v-card>
+        <v-row justify="center">
+        <v-dialog v-model="dialog" max-width="700px">
+        <template v-slot:activator="{ on }">
+            <v-btn  dark class="btn btn-primary mt-5" @click="agregarLetra" v-on="on">Agregar Letra</v-btn>
+            <v-btn  dark class="btn btn-primary mt-5" @click="calcularCartera">Calcular Cartera</v-btn>
+            <v-row>
+            <div v-if="res">
+                <div style="width:100%;display:flex;border-radius:10px;padding: 20px 40px;background:#454545;color:white;margin-top:40px" v-for="person in carteraLetras" :key="person.letra">
+                    <div style="width:50%; display:flex;flex-direction:column;text-align:start" class="ml-4 mt-4">
+                        <div style="display:flex; justify-content:space-between">  <p>Letra </p> <p>{{person.letra}}</p></div>
+                    </div>
+                </div>
+                <div style="width:50%; display:flex;flex-direction:column;text-align:start" class="ml-4 mt-4">
+                    <div style="display:flex; justify-content:space-between">  <p>TCEA </p> <p> Calculo </p></div>
+                </div>
+            </div>
+            </v-row>
+        </template>
+        <v-card>
         <v-card-title>
           <span class="headline">Datos de la Letra</span>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="Denominacion" label="Titulo de la Letra" color="#000000" required></v-text-field>
-              </v-col>
+            <v-container>
+                <v-row>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="Denominacion" label="Titulo de la Letra" color="#000000" required></v-text-field>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="LugarGiro" label="Lugar de Giro" color="#000000" required></v-text-field>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="LugarGiro" label="Lugar de Giro" color="#000000" required></v-text-field>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-                <v-menu v-model="menu1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
-                    <template v-slot:activator="{ on }">
-                        <v-text-field v-model="FechaGiro" label="Fecha de Giro" readonly v-on="on" color="#000000"></v-text-field>
-                    </template>
-                <v-date-picker v-model="FechaGiro" @input="menu1 = false" color="#0008FF"></v-date-picker>                        
-                </v-menu>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-menu v-model="menu1" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                        <template v-slot:activator="{ on }">
+                            <v-text-field v-model="FechaGiro" label="Fecha de Giro" readonly v-on="on" color="#000000"></v-text-field>
+                        </template>
+                    <v-date-picker v-model="FechaGiro" @input="menu1 = false" color="#0008FF"></v-date-picker>                        
+                    </v-menu>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-              <v-text-field type="number" v-model="ValorNominal" label="Valor Nominal" color="#000000"></v-text-field>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field type="number" v-model="ValorNominal" label="Valor Nominal" color="#000000"></v-text-field>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="NombreGirado" label="Nombre Girado" color="#000000" required></v-text-field>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="NombreGirado" label="Nombre Girado" color="#000000" required></v-text-field>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-              <v-text-field type="number" v-model="DniGirado" label="Dni Girado" color="#000000"></v-text-field>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field type="number" v-model="DniGirado" label="Dni Girado" color="#000000"></v-text-field>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="NombreBeneficiario" label="Nombre Beneficiario" color="#000000" required></v-text-field>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="NombreBeneficiario" label="Nombre Beneficiario" color="#000000" required></v-text-field>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="NombreGirador" label="Nombre Girador" color="#000000" required></v-text-field>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="NombreGirador" label="Nombre Girador" color="#000000" required></v-text-field>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-              <v-text-field type="number" v-model="DniGirador" label="Dni Girador" color="#000000"></v-text-field>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field type="number" v-model="DniGirador" label="Dni Girador" color="#000000"></v-text-field>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-                <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
-                    <template v-slot:activator="{ on }">
-                        <v-text-field v-model="FechaVencimiento" label="Fecha de Vencimiento" readonly v-on="on" color="#000000"></v-text-field>
-                    </template>
-                <v-date-picker v-model="FechaVencimiento" @input="menu2 = false" color="#0008FF"></v-date-picker>                        
-                </v-menu>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                        <template v-slot:activator="{ on }">
+                            <v-text-field v-model="FechaVencimiento" label="Fecha de Vencimiento" readonly v-on="on" color="#000000"></v-text-field>
+                        </template>
+                    <v-date-picker v-model="FechaVencimiento" @input="menu2 = false" color="#0008FF"></v-date-picker>                        
+                    </v-menu>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="Retencion" label="Retencion" color="#000000" required></v-text-field>
-              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="Retencion" label="Retencion" color="#000000" required></v-text-field>
+                </v-col>
 
+                <div slot="header"> Costes/Gastos Iniciales </div>
+                    <v-card >
+                        <v-card-text>
+                            <v-container grid-list-md>
+                                <v-layout wrap>
 
+                                    <v-row>
+                                    <v-col>
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
+                                        <v-select v-model="MotivoInicial" :items="Motivo" label="Motivo" color="#000000"></v-select>
 
-              <div slot="header"> Costes/Gastos Iniciales </div>
-                <v-card >
-                    <v-card-text>
-                        <v-container grid-list-md>
-                            <v-layout wrap>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12  style="display:flex;">
-                                    <v-select v-model="MotivoInicial" :items="Motivo" label="Motivo" color="#000000"></v-select>
-
-                                    <v-tooltip right>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Estos corresponden a los costes o gastos que deben pagarse al acreedor para realizar la operación, y que se descontarán del Valor Neto</span>                             
-                                    <v-spacer></v-spacer>
-                                    <span>(diferencia entre el Valor Nominal y Descuento); estos montos afectarán al cálculo de la Tasa de Coste Efectivo Anual (T.C.E.A.).</span>
-                                    </v-tooltip>
-
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-
-                                <v-spacer></v-spacer>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12  style="display:flex;">
-                                    <v-select v-model="TipoVI" :items="TipoValor" label="Valor Expresado en: " color="#000000" ></v-select>
-
-                                    <v-tooltip right>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Ingresar el monto en efectivo o en porcentaje, segun sea el caso</span>                             
-                                    </v-tooltip>
-
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-
-                                <v-spacer></v-spacer>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12  style="display:flex;">
-                                <v-text-field type="number" v-model="ValorCosteI" label="Valor: " color="#000000"></v-text-field>
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-
-                                <v-spacer></v-spacer>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12  style="display:flex;">
-                                <v-btn class="mx-2" fab dark color="indigo" @click.native="agregarCosteInicial(MotivoInicial,ValorCosteI)">ADD</v-btn>
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-                                
-                                <v-flex xs12 sm12 md12 lg12 xl12>
-                                    <v-spacer></v-spacer>
-                                    <v-spacer></v-spacer>
-                                    <v-data-table :headers="cabeceraDetalles" :items="CInicial" hide-actions class="elevation-1">
-                                        <template slot="items" slot-scope="props">
-                                            
-                                            <td class="justify-center layout px-0">
-                                                <v-icon small class="mr-2" @click="eliminarDetalle(CInicial,props.item)">delete</v-icon>
-                                            </td>
-                                                    
-                                            <td>
-                                                <v-text-field type="string" v-model="props.item.motivo"></v-text-field>
-                                            </td>
-
-                                            <td>
-                                                <v-text-field type="number" v-model="props.item.valor" ></v-text-field >
-                                            </td>   
+                                        <v-tooltip right>
+                                        <template v-slot:activator="{ on }">
+                                        <v-layout align-center justify-space-around>
+                                        <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                        </v-layout>
                                         </template>
-                                    </v-data-table>
-                                </v-flex>
+                                        <span>Estos corresponden a los costes o gastos que deben pagarse al acreedor para realizar la operación, y que se descontarán del Valor Neto</span>                             
+                                        <v-spacer></v-spacer>
+                                        <span>(diferencia entre el Valor Nominal y Descuento); estos montos afectarán al cálculo de la Tasa de Coste Efectivo Anual (T.C.E.A.).</span>
+                                        </v-tooltip>
 
-                            </v-layout>
-                        </v-container>
-                    </v-card-text>
-                </v-card>
+                                    </v-flex>
+                                    </v-col>
+                                    </v-row>
 
-
-                <div slot="header"> Costes/Gastos Finales </div>
-                <v-card >
-                    <v-card-text class="px-4">
-                        <v-container grid-list-md>
-                            <v-layout wrap>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12  style="display:flex;">
-                                    <v-select v-model="MotivoFinal" :items="Motivo" label="Motivo" color="#000000"></v-select>
-
-                                    <v-tooltip right>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Estos corresponden a los costes o gastos que deben pagarse al acreedor al finalizar la operación, y que se agregarán al Valor Nominal.</span>                             
                                     <v-spacer></v-spacer>
-                                    <span>Estos montos afectarán al cálculo de la Tasa de Coste Efectivo Anual (T.C.E.A.).</span>
-                                    </v-tooltip>
 
+                                    <v-row>
+                                    <v-col>
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
+                                        <v-select v-model="TipoVI" :items="TipoValor" label="Valor Expresado en: " color="#000000" ></v-select>
 
-                                </v-flex>
-                                </v-col>
-                                </v-row>
+                                        <v-tooltip right>
+                                        <template v-slot:activator="{ on }">
+                                        <v-layout align-center justify-space-around>
+                                        <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                        </v-layout>
+                                        </template>
+                                        <span>Ingresar el monto en efectivo o en porcentaje, segun sea el caso</span>                             
+                                        </v-tooltip>
 
-                                <v-spacer></v-spacer>
+                                    </v-flex>
+                                    </v-col>
+                                    </v-row>
 
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12  style="display:flex;">
-                                    <v-select v-model="TipoVF" :items="TipoValor" label="Valor Expresado en: " color="#000000"></v-select>
+                                    <v-spacer></v-spacer>
 
-                                    <v-tooltip right>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Ingresar el monto en efectivo o en porcentaje, segun sea el caso</span>                             
-                                    </v-tooltip>
+                                    <v-row>
+                                    <v-col>
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
+                                    <v-text-field type="number" v-model="ValorCosteI" label="Valor: " color="#000000"></v-text-field>
+                                    </v-flex>
+                                    </v-col>
+                                    </v-row>
+
+                                    <v-spacer></v-spacer>
+
+                                    <v-row>
+                                    <v-col>
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
+                                    <v-btn class="mx-2" fab dark color="indigo" @click.native="agregarCosteInicial(MotivoInicial,ValorCosteI)">ADD</v-btn>
+                                    </v-flex>
+                                    </v-col>
+                                    </v-row>
                                     
-                                </v-flex>
-                                </v-col>
-                                </v-row>
+                                    <v-flex xs12 sm12 md12 lg12 xl12>
+                                        <v-spacer></v-spacer>
+                                        <v-spacer></v-spacer>
+                                        <v-data-table :headers="cabeceraDetalles" :items="CInicial" hide-actions class="elevation-1">
+                                            <template slot="items" slot-scope="props">
+                                                
+                                                <td class="justify-center layout px-0">
+                                                    <v-icon small class="mr-2" @click="eliminarDetalle(CInicial,props.item)">delete</v-icon>
+                                                </td>
+                                                        
+                                                <td>
+                                                    <v-text-field type="string" v-model="props.item.motivo"></v-text-field>
+                                                </td>
 
-                                <v-spacer></v-spacer>
+                                                <td>
+                                                    <v-text-field type="number" v-model="props.item.valor" ></v-text-field >
+                                                </td>   
+                                            </template>
+                                        </v-data-table>
+                                    </v-flex>
 
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12>
-                                    <v-text-field type="number" v-model="ValorCosteF" label="Valor: " color="#000000"></v-text-field>
-                                </v-flex>
-                                </v-col>
-                                </v-row>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+                    </v-card>
 
-                                <v-spacer></v-spacer>
 
-                                <v-row>
-                                <v-col>
-                                <v-btn class="mx-2" fab dark color="indigo" @click.native="agregarCosteFinal(MotivoFinal,ValorCosteF)">ADD</v-btn>
-                                </v-col>
-                                </v-row>
+                    <div slot="header"> Costes/Gastos Finales </div>
+                    <v-card >
+                        <v-card-text class="px-4">
+                            <v-container grid-list-md>
+                                <v-layout wrap>
 
-                                <v-flex xs12 sm12 md12 lg12 xl12>
-                                    <v-data-table :headers="cabeceraDetalles" :items="CFinal" hide-actions class="elevation-1">
-                                        <template slot="items" slot-scope="props" >
-                                            <td class="justify-center layout px-0">
-                                                <v-icon small class="mr-2" @click="eliminarDetalle(CFinal,props.item)">delete</v-icon>
-                                            </td>
-                                                    
-                                            <td>
-                                                <v-text-field type="string" v-model="props.item.motivo"></v-text-field>
-                                            </td>
+                                    <v-row>
+                                    <v-col>
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
+                                        <v-select v-model="MotivoFinal" :items="Motivo" label="Motivo" color="#000000"></v-select>
 
-                                            <td>
-                                                <v-text-field type="number" v-model="props.item.valor"></v-text-field>
-                                            </td>   
+                                        <v-tooltip right>
+                                        <template v-slot:activator="{ on }">
+                                        <v-layout align-center justify-space-around>
+                                        <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                        </v-layout>
                                         </template>
-                                    </v-data-table>
-                                </v-flex>
-
-                            </v-layout>
-                        </v-container>
-                    </v-card-text>
-                </v-card>
+                                        <span>Estos corresponden a los costes o gastos que deben pagarse al acreedor al finalizar la operación, y que se agregarán al Valor Nominal.</span>                             
+                                        <v-spacer></v-spacer>
+                                        <span>Estos montos afectarán al cálculo de la Tasa de Coste Efectivo Anual (T.C.E.A.).</span>
+                                        </v-tooltip>
 
 
+                                    </v-flex>
+                                    </v-col>
+                                    </v-row>
 
+                                    <v-spacer></v-spacer>
 
+                                    <v-row>
+                                    <v-col>
+                                    <v-flex xs12 sm12 md12  style="display:flex;">
+                                        <v-select v-model="TipoVF" :items="TipoValor" label="Valor Expresado en: " color="#000000"></v-select>
 
+                                        <v-tooltip right>
+                                        <template v-slot:activator="{ on }">
+                                        <v-layout align-center justify-space-around>
+                                        <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
+                                        </v-layout>
+                                        </template>
+                                        <span>Ingresar el monto en efectivo o en porcentaje, segun sea el caso</span>                             
+                                        </v-tooltip>
+                                        
+                                    </v-flex>
+                                    </v-col>
+                                    </v-row>
 
+                                    <v-spacer></v-spacer>
 
+                                    <v-row>
+                                    <v-col>
+                                    <v-flex xs12 sm12 md12>
+                                        <v-text-field type="number" v-model="ValorCosteF" label="Valor: " color="#000000"></v-text-field>
+                                    </v-flex>
+                                    </v-col>
+                                    </v-row>
 
+                                    <v-spacer></v-spacer>
 
+                                    <v-row>
+                                    <v-col>
+                                    <v-btn class="mx-2" fab dark color="indigo" @click.native="agregarCosteFinal(MotivoFinal,ValorCosteF)">ADD</v-btn>
+                                    </v-col>
+                                    </v-row>
 
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+                                    <v-flex xs12 sm12 md12 lg12 xl12>
+                                        <v-data-table :headers="cabeceraDetalles" :items="CFinal" hide-actions class="elevation-1">
+                                            <template slot="items" slot-scope="props" >
+                                                <td class="justify-center layout px-0">
+                                                    <v-icon small class="mr-2" @click="eliminarDetalle(CFinal,props.item)">delete</v-icon>
+                                                </td>
+                                                        
+                                                <td>
+                                                    <v-text-field type="string" v-model="props.item.motivo"></v-text-field>
+                                                </td>
+
+                                                <td>
+                                                    <v-text-field type="number" v-model="props.item.valor"></v-text-field>
+                                                </td>   
+                                            </template>
+                                        </v-data-table>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+                    </v-card>
+                </v-row>
+            </v-container>
+            </v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+            <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
+    </v-row>
     </div>
+
 </v-layout>
 </template>
 
@@ -311,13 +317,13 @@ export default {
       dialog: false,
       team: [
           {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'}
+          {name: 'Nombre Letra2', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
+          {name: 'Nombre Letra3', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
+          {name: 'Nombre Letra4', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
+          {name: 'Nombre Letra5', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
+          {name: 'Nombre Letra6', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
+          {name: 'Nombre Letra7', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
+          {name: 'Nombre Letra8', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'}
       ],
 
       menu1: false,
@@ -419,6 +425,18 @@ export default {
       motivo: "",
       valor: "",
 
+      //Datos de la letra
+      Denominacion: "",
+      LugarGiro: "",
+      FechaGiro: "",
+      NombreGirado: "",
+      DniGirado: "",
+      NombreBeneficiario: "",
+      NombreGirador: "",
+      DniGirador: "",
+
+      //Agregar a la cartera
+      carteraLetras: []      
     };
   },
   computed:{
@@ -430,6 +448,18 @@ export default {
   created() {
   },
   methods: {
+    agregarCartera(letra1){
+        this.carteraLetras.push({
+            letra: letra1
+        });
+    },
+    agregarLetra(){
+
+    },
+    calcularCartera(){
+        let me = this;
+        me.res = true;
+    },
     agregarCosteInicial( motivo1,valor1) {
         this.CInicial.push({
             motivo: motivo1,
@@ -445,6 +475,12 @@ export default {
      },
     
     eliminarDetalle(arr, item) {
+        var i = arr.indexOf(item);
+        if (i !== -1) {
+            arr.splice(i, 1);
+        }
+    },
+    eliminarLetra(arr, item){
         var i = arr.indexOf(item);
         if (i !== -1) {
             arr.splice(i, 1);
