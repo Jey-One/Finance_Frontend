@@ -20,10 +20,10 @@
                             <v-btn small flat color="blue" @click="agregarCartera(letra)">
                                 <span>Agregar</span>
                             </v-btn>
-                            <v-btn small flat color="green">
+                            <v-btn small flat color="green" @click="editarLetra(letra)">
                                 <span>Editar</span>
                             </v-btn>
-                            <v-btn small flat color="red" @click="eliminarDetalle(misLetras , letra)" >
+                            <v-btn small flat color="red" @click="eliminarLetra(letra)">
                                 <v-icon>delete</v-icon>
                             </v-btn>
                             </b-button-group>
@@ -301,7 +301,7 @@
             <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-            <v-btn color="blue darken-1" text @click.native="guardarLetra, dialog=false" >Save</v-btn>
+            <v-btn color="blue darken-1" text @click.native="guardarLetra(), dialog=false" >Save</v-btn>
             </v-card-actions>
         </v-card>
         </v-dialog>
@@ -442,6 +442,8 @@ export default {
       DniGirador: "",
       LugarPago: "",
 
+      Id: "",
+      editedIndex: -1,
       //Agregar a la cartera
       carteraLetras: []      
     };
@@ -470,8 +472,55 @@ export default {
           console.log(error);
         });
     },
+
+    editarLetra(letra) {
+      this.Id = letra.id,
+      this.Denominacion = letra.denominacion,
+      this.LugarGiro = letra.lugarGiro,
+      this.FechaGiro= letra.fechaGiro,
+      this.ValorNominal= letra.valorNominal,
+      this.NombreGirado= letra.nombreGirado,
+      this.DniGirado= letra.dniGirado,
+      this.NombreBeneficiario= letra.nombreBeneficiario,
+      this.NombreGirador= letra.nombreGirador,
+      this.DniGirador= letra.dniGirador,
+      this.FirmaGirador= letra.firmaGirador,
+      this.FechaVencimiento= letra.fechaVencimiento,
+      this.LugarPago= letra.lugarPago,
+      this.Retencion= letra.retencion,
+      this.CFinal= [],
+      this.UserId= letra.userId,
+
+      this.editedIndex = 1;
+      this.dialog = true;
+    },
     guardarLetra(){
+        if (this.editedIndex > -1) {
         let me = this;
+        axios 
+          .put("api/letras", {
+            id: me.Id,
+            denominacion: me.Denominacion,
+            lugarGiro: me.LugarGiro,
+            fechaGiro: me.FechaGiro,
+            valorNominal: me.ValorNominal,
+            nombreGirado: me.NombreGirado,
+            dniGirado: me.DniGirado,
+            nombreBeneficiario: me.NombreBeneficiario,
+            nombreGirador: me.NombreGirador,
+            dniGirador: me.DniGirador,
+            firmaGirador: me.FirmaGirador,
+            fechaVencimiento: me.FechaVencimiento,
+            lugarPago: me.LugarPago,
+            retencion: me.Retencion,
+            gastos: [],
+            userId: 1,
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else{
+          let me =this;
         axios
         .post("api/letras", {
             denominacion: me.Denominacion,
@@ -487,11 +536,13 @@ export default {
             fechaVencimiento: me.FechaVencimiento,
             lugarPago: me.LugarPago,
             retencion: me.Retencion,
-            userId: me.user.id
+            gastos: [],
+            userId: 1,
         })
         .catch(function(error) {
             console.log(error);
           });
+    }
     },
     agregarCartera(letra1){
         this.carteraLetras.push({
@@ -522,11 +573,14 @@ export default {
             arr.splice(i, 1);
         }
     },
-    eliminarLetra(arr, item){
-        var i = arr.indexOf(item);
-        if (i !== -1) {
-            arr.splice(i, 1);
-        }
+    eliminarLetra(item){
+        axios.delete('api/letras/'+ item.id ).then(function(response) {
+          //console.log(response);
+          //me.misLetras = response.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     calcular()
     {
