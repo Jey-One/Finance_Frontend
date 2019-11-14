@@ -1,28 +1,29 @@
 <template>
 <v-layout text-xs-center wrapv-layout > 
-    <div class = "team">
+    <div class = "team" style="width:80vw">
         <h3 class="display-1 font-weight-bold mb-3">Mis Letras</h3>
         <v-container class="my-5">
-            <v-layout row wrap>
-                <v-flex xs12 sm6 md4 lg3 v-for="person in team" :key="person.name">
+            <v-layout row wrap style="width:100%">
+                <v-flex xs12 sm6 md4 lg3 v-for="letra in misLetras" :key="letra.id">
                     <v-card flat class="text-xs-center ma-3" color="#26c6da">
                         <v-responsive class="pt-4">
-                            <div class="subheading">{{person.name}}</div>
+                            <div class="title">{{letra.denominacion}}</div>
                         </v-responsive>
                         <v-card-text>
-                            <div class="subheading">{{person.valor}}</div>
-                            <div class="subheading">{{person.fechaDescuento}}</div>
-                            <div class="subheading">{{person.nombreGirado}}</div>
+                            <div style="display:flex; justify-content:space-between"> Valor Nominal: <p></p> {{letra.valorNominal}}</div>
+                            <div style="display:flex; justify-content:space-between"> Nombre Girado: <p></p> {{letra.nombreGirado}}</div>
+                            <div style="display:flex; justify-content:space-between"> F. Vencimiento: <p></p> {{moment(letra.fechaVencimiento).format('DD-MM-YYYY')}}</div>
+                            <div style="display:flex; justify-content:space-between"> Lugar Pago: <p></p> {{letra.lugarPago}}</div>
                         </v-card-text>
                         <v-card-actions>
                             <b-button-group>
-                            <v-btn small flat color="blue" @click="agregarCartera(person)">
+                            <v-btn small flat color="blue" @click="agregarCartera(letra)">
                                 <span>Agregar</span>
                             </v-btn>
                             <v-btn small flat color="green">
                                 <span>Editar</span>
                             </v-btn>
-                            <v-btn small flat color="red" @click="eliminarDetalle(team , person)" >
+                            <v-btn small flat color="red" @click="eliminarDetalle(misLetras , letra)" >
                                 <v-icon>delete</v-icon>
                             </v-btn>
                             </b-button-group>
@@ -35,13 +36,13 @@
         <v-row justify="center">
         <v-dialog v-model="dialog" max-width="700px">
         <template v-slot:activator="{ on }">
-            <v-btn  dark class="btn btn-primary mt-5" @click="agregarLetra" v-on="on">Agregar Letra</v-btn>
+            <v-btn  dark class="btn btn-primary mt-5" v-on="on">Agregar Letra</v-btn>
             <v-btn  dark class="btn btn-primary mt-5" @click="calcularCartera">Calcular Cartera</v-btn>
             <v-row>
             <div v-if="res">
                 <div style="width:100%;display:flex;border-radius:10px;padding: 20px 40px;background:#454545;color:white;margin-top:40px" v-for="person in carteraLetras" :key="person.letra">
                     <div style="width:50%; display:flex;flex-direction:column;text-align:start" class="ml-4 mt-4">
-                        <div style="display:flex; justify-content:space-between">  <p>Letra </p> <p>{{person.letra}}</p></div>
+                        <div style="display:flex; justify-content:space-between">  <p>Letra </p> <p>{{letra.id}}</p></div>
                     </div>
                 </div>
                 <div style="width:50%; display:flex;flex-direction:column;text-align:start" class="ml-4 mt-4">
@@ -105,6 +106,10 @@
                         </template>
                     <v-date-picker v-model="FechaVencimiento" @input="menu2 = false" color="#0008FF"></v-date-picker>                        
                     </v-menu>
+                </v-col>
+
+                <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="LugarPago" label="Lugar Pago" color="#000000" required></v-text-field>
                 </v-col>
 
                 <v-col cols="12" sm="6" md="4">
@@ -296,35 +301,36 @@
             <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-            <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+            <v-btn color="blue darken-1" text @click.native="guardarLetra, dialog=false" >Save</v-btn>
             </v-card-actions>
         </v-card>
         </v-dialog>
+
     </v-row>
     </div>
 
 </v-layout>
 </template>
 
-
 <script>
 import axios from "axios";
 import moment from 'moment';
+import store from '../store';
 
 export default {
   data() {
     return {
+      moment: moment,
       dialog: false,
-      team: [
-          {name: 'Nombre Letra', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra2', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra3', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra4', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra5', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra6', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra7', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'},
-          {name: 'Nombre Letra8', valor: 'Valor Nominal', fechaDescuento: 'Fecha de Descuento', nombreGirado: 'Nombre de Girado'}
-      ],
+      misLetras: [],
+      user: 
+      {   
+        id : "",
+        username:"",
+        password:"",
+        name:"",
+        urlImage:""
+      },
 
       menu1: false,
       menu2: false,
@@ -434,6 +440,7 @@ export default {
       NombreBeneficiario: "",
       NombreGirador: "",
       DniGirador: "",
+      LugarPago: "",
 
       //Agregar a la cartera
       carteraLetras: []      
@@ -446,15 +453,50 @@ export default {
   },
 
   created() {
+      this.listar();
+      
+      let me = this;
+      if(localStorage.getItem('session') != null)
+      me.user = JSON.parse(localStorage.getItem('session'));
   },
   methods: {
+    listar() {
+      let me = this;
+      axios.get('api/letras').then(function(response) {
+          //console.log(response);
+          me.misLetras = response.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    guardarLetra(){
+        let me = this;
+        axios
+        .post("api/letras", {
+            denominacion: me.Denominacion,
+            lugarGiro: me.LugarGiro,
+            fechaGiro: me.FechaGiro,
+            valorNominal: me.ValorNominal,
+            nombreGirado: me.NombreGirado,
+            dniGirado: me.DniGirado,
+            nombreBeneficiario: me.NombreBeneficiario,
+            nombreGirador: me.NombreGirador,
+            dniGirador: me.DniGirador,
+            firmaGirador: me.FirmaGirador,
+            fechaVencimiento: me.FechaVencimiento,
+            lugarPago: me.LugarPago,
+            retencion: me.Retencion,
+            userId: me.user.id
+        })
+        .catch(function(error) {
+            console.log(error);
+          });
+    },
     agregarCartera(letra1){
         this.carteraLetras.push({
             letra: letra1
         });
-    },
-    agregarLetra(){
-
     },
     calcularCartera(){
         let me = this;
