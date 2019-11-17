@@ -257,7 +257,7 @@
                                                 </td>
                                                         
                                                 <td>
-                                                    <v-text-field type="string" v-model="props.item.motivo"></v-text-field>
+                                                    <v-text-field type="string" v-model="props.item.nombre"></v-text-field>
                                                 </td>
 
                                                 <td>
@@ -364,7 +364,7 @@
                                                 </td>
                                                         
                                                 <td>
-                                                    <v-text-field type="string" v-model="props.item.motivo"></v-text-field>
+                                                    <v-text-field type="string" v-model="props.item.nombre"></v-text-field>
                                                 </td>
 
                                                 <td>
@@ -389,7 +389,7 @@
                         color="blue"
                           outline
                         round
-                        @click="e1 = 4"
+                        @click="guardarLetra(), dialog=false"
                         >
                         Guardar
                         </v-btn>
@@ -598,6 +598,30 @@ export default {
         let me=this;
         me.e1=0;
     },
+
+    guardarGastos(){
+        let me =this;
+
+        me.CInicial.forEach(element => {
+            axios
+            .post("api/gastos", {
+                nombre: element.motivo,
+                tipo: 1,
+                valor: element.valor,
+                letraId: me.Id,
+            })
+            .then(function (response) {
+                me.listar();
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        });
+    },
+
+
+
+
     guardarLetra(){
         if (this.editedIndex > -1) {
         let me = this;
@@ -617,7 +641,7 @@ export default {
             fechaVencimiento: me.FechaVencimiento,
             lugarPago: me.LugarPago,
             retencion: me.Retencion,
-            gastos: [],
+            gastos: me.CInicial,
             userId: me.user.id,
           })
           .then(function (response) {
@@ -643,7 +667,7 @@ export default {
             fechaVencimiento: me.FechaVencimiento,
             lugarPago: me.LugarPago,
             retencion: me.Retencion,
-            gastos: [],
+            gastos: me.CInicial,
             userId: me.user.id,
         })
         .then(function (response) {
@@ -665,14 +689,16 @@ export default {
     },
     agregarCosteInicial( motivo1,valor1) {
         this.CInicial.push({
-            motivo: motivo1,
+            nombre: motivo1,
+            tipo: 1,
             valor: valor1
         }); 
     },
 
     agregarCosteFinal( motivo1,valor1) {
         this.CFinal.push({
-            motivo: motivo1,
+            nombre: motivo1,
+            tipo: 1,
             valor: valor1
         }); 
      },
