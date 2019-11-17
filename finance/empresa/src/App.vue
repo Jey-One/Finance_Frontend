@@ -1,12 +1,12 @@
 <template>
   <v-app id="app"> 
-    <v-navigation-drawer app v-model="drawer" width="300" style="Background:white !important" temporary>
+    <v-navigation-drawer  app v-model="drawer" width="300" style="Background:white !important" temporary>
       <v-list dense >
         <template>
           <v-layout column align-center>
             <v-flex text-xs-center class="mt-4 mb-3">
               <v-btn style="width:90px ; height:90px;" icon class="mt-4 mb-2 prof">
-                <img class="img_pro" style="position:relative;" :src=user.urlImage alt="gg" />
+                <img class="img_pro" style="" :src=user.urlImage alt="gg" />
                 <v-icon @click="change=true" class="edit" style="position:absolute;">edit</v-icon>
               </v-btn>
               <p class="black--text subheading mt-3" style="font-weight:bold;">{{user.name}}</p>
@@ -62,6 +62,7 @@
         <v-icon color="black">apps</v-icon>
       </v-btn>
     </v-toolbar>
+    
     <v-dialog v-model="change" max-width="500px" persistent>
       <v-card>
           <!-- <v-card-title class="pt-0">  
@@ -85,10 +86,10 @@
           </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog" max-width="500px" persistent>
+    <v-dialog v-model="dialog" max-width="500px" height="500px" persistent>
     <v-card>
       <div style="font-family:Times;">
-        <v-tabs v-model="activeBtn" white slider-color="green" grow background-color="transparent">
+        <v-tabs v-model="activeBtn" white slider-color="blue" grow background-color="transparent">
           <v-tab :key="0" ripple>Registrase</v-tab>
           <v-tab :key="1" ripple>Iniciar Sesión</v-tab>
         </v-tabs>
@@ -98,23 +99,30 @@
           <v-layout wrap>
             <v-flex xs12 sm12 md12>
               <v-text-field
+                prepend-icon="person"
                 v-model="user.username"
-                label="Username"
-                color="green"
+                label="Username"  
+                color="blue"
+                :rules="[rules.min, rules.required]"
               >  
-              <v-icon>home</v-icon>
+             
               </v-text-field>
             </v-flex>
             <v-flex xs12 sm12 md12>
               <v-text-field
+                prepend-icon="lock"
                 v-model="user.password"
-                color="green"
+                color="blue"
                 label="Password"
                  type="password"
+                 :rules="[rules.min, rules.required]"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm12 md12 v-if="this.activeBtn==0">
-              <v-text-field v-model="user.name" label="Name" color="green"></v-text-field>
+              <v-text-field prepend-icon="edit" :rules="[rules.min, rules.required]" v-model="user.name" label="Name" color="blue"></v-text-field>
+            </v-flex>
+            <v-flex>
+            <p v-if="passErr" style="color:red;text-align:center;font-size=0.9rem">Verifique los datos ingresados son correctos</p>
             </v-flex>
             <!--<v-flex xs12 sm12 md12 v-if="this.activeBtn==0">
               <v-text-field v-model="urlImage" @change="SelectFile()" label="Image" type="file" ref="file" color="green"></v-text-field>
@@ -123,24 +131,24 @@
         </v-container>
       </v-card-text>
 
-      <v-card-actions style="justify-content:center; padding-bottom:20px;">
-        <v-btn color="success darken-1" flat @click.native="dialog=false" style="font-family:Times;">Salir</v-btn>
+      <v-card-actions style="justify-content:center; padding-bottom:20px;margin-top:-30px;">
+        <v-btn color="blue darken-1" flat @click.native="dialog=false" >Exit</v-btn>
         <v-btn
-          color="success darken-1"
+          color="blue darken-1"
           flat
           @click.native="login"
           v-if="this.activeBtn==1"
-        >Iniciar Sesión</v-btn>
-        <v-btn color="success darken-1" flat @click.native="register" v-if="this.activeBtn==0" style="font-family:Times;"
+        >Log In</v-btn>
+        <v-btn color="blue darken-1" flat @click.native="register" v-if="this.activeBtn==0"
         >Registrarse</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-
+  
     <v-content style="background:white;">
       <v-container fluid fill-height style="width:70vw;background:white;">
         <v-slide-y-transition mode="out-in">
-          <router-view />
+          <router-view/>
         </v-slide-y-transition>
       </v-container>
     </v-content>
@@ -155,7 +163,13 @@ export default {
   name: "App",
   data() {
     return {
-      isLogin:true,
+      passErr:false,
+      rules: {
+          required: value => !!value || 'Requerido.',
+          min: v => v.length <= 10 || 'Max 10 caracteres',
+        },
+      progress:false,
+      isLogin:false,
       file:"",
       change:false,
       drawer: false,
@@ -171,9 +185,19 @@ export default {
       }
     };
   },
+  components:
+  {
+  },
   computed:{
   
   },
+   watch: {
+      passErr(val) {
+        val && setTimeout(() => {
+          this.passErr= false;
+        }, 3000)
+      },
+    },
   created()
   {
     
@@ -185,7 +209,7 @@ export default {
     isLoginMethod()
     {
       let me = this;
-      if(!me.isLogin && !localStorage.getItem('session') == null)
+      if(!me.isLogin && localStorage.getItem('session') == null )
       {
         this.dialog = true;
       }
@@ -237,7 +261,14 @@ export default {
     },
     login()
     {
-      let me = this
+    
+      let me = this;
+      if(me.user.username.length == 0 && me.user.password.length == 0) 
+      {
+        me.passErr = true;
+        return;
+      }
+      console.log("Gola")
       axios.get("api/users/"+me.user.username+"/"+me.user.password)
       .then(function(response)
       {
@@ -249,28 +280,41 @@ export default {
           me.isLogin = true;
           me.dialog = false;
           localStorage.setItem("session",JSON.stringify(me.user));
+          me.$router.push({name:"progress"});
+          me.limpiar();
         }
       })
       .catch(function(error)
       {
+        me.passErr=true;
         console.log(error);
       })  
     },
-    LogOut()
+    limpiar()
     {
       let me = this;
       me.isLogin = false;
       me.drawer = false;
-      localStorage.removeItem("session");
       me.user.id = "";
       me.user.username="";
       me.user.password ="";
       me.user.name = "";
       me.user.urlImage ="";
     },
+    LogOut()
+    {
+      let me = this;
+      localStorage.removeItem("session");
+      me.limpiar();
+    },
     register()
     {
       let me = this;
+       if(me.user.username.length == 0 && me.user.password.length == 0 && me.user.name.length == 0) 
+      {
+        me.passErr = true;
+        return;
+      }
       me.user.urlImage ='https://cdn.vuetifyjs.com/images/logos/vuetify-logo-300.png';
       axios.post("api/users",
       {
@@ -283,13 +327,14 @@ export default {
       {
         if(response.data == true)
         {
-  
+          me.limpiar();
         }
         console.log(response);
        
       })
       .catch(function(error)
       {
+        me.passErr=true;
         console.log(error);
       })
     }
