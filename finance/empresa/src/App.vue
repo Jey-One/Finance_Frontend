@@ -7,7 +7,7 @@
             <v-flex text-xs-center class="mt-4 mb-3">
               <v-btn style="width:90px ; height:90px;" icon class="mt-4 mb-2 prof">
                 <img class="img_pro" style="position:relative;" :src=user.urlImage alt="gg" />
-                <v-icon @click="change=true" class="edit" style="position:absolute;">edit</v-icon>
+                <v-icon @click="isLoginMethod" class="edit" style="position:absolute;">edit</v-icon>
               </v-btn>
               <p class="black--text subheading mt-3" style="font-weight:bold;">{{user.name}}</p>
             </v-flex>
@@ -28,7 +28,7 @@
             <v-list-tile-action style="color:black;">
               <v-icon>table_chart</v-icon>
             </v-list-tile-action>
-            <v-list-tile-title style="color:black;">Descuento por letra</v-list-tile-title>
+            <v-list-tile-title style="color:black;">Calcular Letra</v-list-tile-title>
           </v-list-tile>
         </template>
         <template>
@@ -36,7 +36,7 @@
             <v-list-tile-action style="color:black;">
               <v-icon>table_chart</v-icon>
             </v-list-tile-action>
-            <v-list-tile-title style="color:black;">Cartera de letras</v-list-tile-title>
+            <v-list-tile-title style="color:black;">Calcular Cartera de Letras</v-list-tile-title>
           </v-list-tile>
         </template>
         <template>
@@ -52,7 +52,7 @@
             <v-list-tile-action style="color:black;">
               <v-icon>table_chart</v-icon>
             </v-list-tile-action>
-            <v-list-tile-title style="color:black;">Log Out</v-list-tile-title>
+            <v-list-tile-title style="color:black;">Logout</v-list-tile-title>
           </v-list-tile>
         </template>
       </v-list>
@@ -109,7 +109,7 @@
                 v-model="user.username"
                 label="Username"
                 color="green"
-              >
+              >  
               <v-icon>home</v-icon>
               </v-text-field>
             </v-flex>
@@ -163,7 +163,7 @@ export default {
   name: "App",
   data() {
     return {
-      isLogin:true,
+      isLogin:false,
       file:"",
       change:false,
       drawer: false,
@@ -193,7 +193,7 @@ export default {
     isLoginMethod()
     {
       let me = this;
-      if(!me.isLogin && !localStorage.getItem('session') == null)
+      if(!me.isLogin && localStorage.getItem('session') == null)
       {
         this.dialog = true;
       }
