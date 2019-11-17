@@ -7,7 +7,7 @@
             <v-flex text-xs-center class="mt-4 mb-3">
               <v-btn style="width:90px ; height:90px;" icon class="mt-4 mb-2 prof">
                 <img class="img_pro" style="position:relative;" :src=user.urlImage alt="gg" />
-                <v-icon @click="isLoginMethod" class="edit" style="position:absolute;">edit</v-icon>
+                <v-icon @click="change=true" class="edit" style="position:absolute;">edit</v-icon>
               </v-btn>
               <p class="black--text subheading mt-3" style="font-weight:bold;">{{user.name}}</p>
             </v-flex>
@@ -24,19 +24,11 @@
 
         </template>
         <template>
-          <v-list-tile :to="{name:'letras'}">
+          <v-list-tile :to="{name:'option'}">
             <v-list-tile-action style="color:black;">
               <v-icon>table_chart</v-icon>
             </v-list-tile-action>
-            <v-list-tile-title style="color:black;">Calcular Letra</v-list-tile-title>
-          </v-list-tile>
-        </template>
-        <template>
-          <v-list-tile :to="{name:'carteraLetras'}">
-            <v-list-tile-action style="color:black;">
-              <v-icon>table_chart</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-title style="color:black;">Calcular Cartera de Letras</v-list-tile-title>
+            <v-list-tile-title style="color:black;">Calcular</v-list-tile-title>
           </v-list-tile>
         </template>
         <template>
@@ -163,7 +155,7 @@ export default {
   name: "App",
   data() {
     return {
-      isLogin:false,
+      isLogin:true,
       file:"",
       change:false,
       drawer: false,
@@ -193,7 +185,7 @@ export default {
     isLoginMethod()
     {
       let me = this;
-      if(!me.isLogin && localStorage.getItem('session') == null)
+      if(!me.isLogin && !localStorage.getItem('session') == null)
       {
         this.dialog = true;
       }
