@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import Letras from './components/Letras.vue'
 import CarteraLetras from './components/CarteraLetras.vue'
 import MisLetras from './components/MisLetras.vue'
-
+import OptionsTabs from './components/OptionsTabs.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +30,11 @@ export default new Router({
       path: '/misLetras',
       name: 'misLetras',
       component: MisLetras
+    },
+    {
+      path: '/option',
+      name: 'option',
+      component: OptionsTabs
     }
 
 

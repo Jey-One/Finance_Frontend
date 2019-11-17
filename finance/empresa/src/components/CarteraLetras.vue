@@ -1,12 +1,10 @@
 <template>
-<v-layout text-xs-center wrapv-layout >
+<v-layout text-xs-center wrapv-layout class="mt-5" >
     <v-flex>
-        <h3 class="display-1 font-weight-bold mb-3">Descuento Por Letras</h3>
-
         <template v-if="TasaPlazoActivo ==='activado'">
-        <v-flex xs12 sm12 md12>
+       <!--  <v-flex xs12 sm12 md12>
             <v-text-field v-model="Descripcion" label="Breve Descripcion" color="#000000"></v-text-field>
-        </v-flex>
+        </v-flex> -->
 
         <v-flex xs12 sm12 md12>
             <v-select v-model="TipoTasa" :items="TipoTasaOperacion" label="Elige el tipo de Tasa" color="#000000"></v-select>
