@@ -452,19 +452,19 @@ export default {
 
   },
   watch:{
+      
   },
 
   created() {
-      this.listar();
-      
-      let me = this;
-      if(localStorage.getItem('session') != null)
-      me.user = JSON.parse(localStorage.getItem('session'));
+    let me = this;
+    if(localStorage.getItem('session') != null)
+    me.user = JSON.parse(localStorage.getItem('session'));
+    this.listar();
   },
   methods: {
     listar() {
       let me = this;
-      axios.get('api/letras').then(function(response) {
+      axios.get('api/letras/GetLetrasByUserId/'+ me.user.id).then(function(response) {
           //console.log(response);
           me.misLetras = response.data;
         })
@@ -474,6 +474,7 @@ export default {
     },
 
     editarLetra(letra) {
+      let me = this;
       this.Id = letra.id,
       this.Denominacion = letra.denominacion,
       this.LugarGiro = letra.lugarGiro,
@@ -489,7 +490,7 @@ export default {
       this.LugarPago= letra.lugarPago,
       this.Retencion= letra.retencion,
       this.CFinal= [],
-      this.UserId= letra.userId,
+      this.UserId= me.user.id,
 
       this.editedIndex = 1;
       this.dialog = true;
@@ -514,8 +515,11 @@ export default {
             lugarPago: me.LugarPago,
             retencion: me.Retencion,
             gastos: [],
-            userId: 1,
+            userId: me.user.id,
           })
+          .then(function (response) {
+              me.listar();
+           })
           .catch(function(error) {
             console.log(error);
           });
@@ -537,7 +541,10 @@ export default {
             lugarPago: me.LugarPago,
             retencion: me.Retencion,
             gastos: [],
-            userId: 1,
+            userId: me.user.id,
+        })
+        .then(function (response) {
+            me.listar();
         })
         .catch(function(error) {
             console.log(error);
@@ -574,9 +581,13 @@ export default {
         }
     },
     eliminarLetra(item){
+        let me = this
         axios.delete('api/letras/'+ item.id ).then(function(response) {
           //console.log(response);
           //me.misLetras = response.data;
+        })
+        .then(function (response) {
+            me.listar();
         })
         .catch(function(error) {
           console.log(error);

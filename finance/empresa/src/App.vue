@@ -24,19 +24,11 @@
 
         </template>
         <template>
-          <v-list-tile :to="{name:'letras'}">
+          <v-list-tile :to="{name:'option'}">
             <v-list-tile-action style="color:black;">
               <v-icon>table_chart</v-icon>
             </v-list-tile-action>
-            <v-list-tile-title style="color:black;">Descuento por letra</v-list-tile-title>
-          </v-list-tile>
-        </template>
-        <template>
-          <v-list-tile :to="{name:'carteraLetras'}">
-            <v-list-tile-action style="color:black;">
-              <v-icon>table_chart</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-title style="color:black;">Cartera de letras</v-list-tile-title>
+            <v-list-tile-title style="color:black;">Calcular</v-list-tile-title>
           </v-list-tile>
         </template>
         <template>
@@ -52,7 +44,7 @@
             <v-list-tile-action style="color:black;">
               <v-icon>table_chart</v-icon>
             </v-list-tile-action>
-            <v-list-tile-title style="color:black;">Log Out</v-list-tile-title>
+            <v-list-tile-title style="color:black;">Logout</v-list-tile-title>
           </v-list-tile>
         </template>
       </v-list>
@@ -109,7 +101,7 @@
                 v-model="user.username"
                 label="Username"
                 color="green"
-              >
+              >  
               <v-icon>home</v-icon>
               </v-text-field>
             </v-flex>
@@ -321,7 +313,6 @@ export default {
   background: black;
   color: white;
   opacity: 0.7;
-
 }
 label[for="changePro"] {
   font-family: sans-serif, 'Lucida Sans';
