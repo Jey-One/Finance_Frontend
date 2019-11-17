@@ -155,7 +155,7 @@ export default {
   name: "App",
   data() {
     return {
-      isLogin:true,
+      isLogin:false,
       file:"",
       change:false,
       drawer: false,
@@ -185,7 +185,7 @@ export default {
     isLoginMethod()
     {
       let me = this;
-      if(!me.isLogin && !localStorage.getItem('session') == null)
+      if(!me.isLogin && localStorage.getItem('session') == null)
       {
         this.dialog = true;
       }

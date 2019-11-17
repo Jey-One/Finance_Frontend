@@ -37,7 +37,7 @@ import CarteraLetras from './CarteraLetras'
 export default {
     data()
     {
-        
+        return 0
     },
     components:
     {
