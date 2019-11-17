@@ -8,6 +8,7 @@
         </v-flex>
 
         <v-flex xs12 sm12 md12>
+            
             <v-select v-model="TipoTasa" :items="TipoTasaOperacion" label="Elige el tipo de Tasa" color="#000000"></v-select>
         </v-flex>
         
