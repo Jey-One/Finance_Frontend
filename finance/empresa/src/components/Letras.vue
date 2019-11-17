@@ -79,8 +79,7 @@
                                 <v-row>
                                 <v-col>
                                 <v-flex xs12 sm12 md12 style="display:flex;">
-                                    <v-text-field type="number" v-model="ValorNominal" label="Valor Nominal" color="#000000"></v-text-field>
-
+                                    <v-text-field type="number" v-model="ValorNominal" label="Valor Nominal" color="#000000" min = 1></v-text-field>
                                     <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
                                     <v-layout align-center justify-space-around>
@@ -101,7 +100,7 @@
                                 <v-row>
                                 <v-col>
                                 <v-flex xs12 sm12 md12 style="display:flex;">
-                                    <v-text-field type="number" v-model="Retencion" label="Retención" color="#000000"></v-text-field>
+                                    <v-text-field type="number" v-model="Retencion" label="Retención" color="#000000" min = 1></v-text-field>
 
                                     <v-tooltip bottom>
                                     <template v-slot:activator="{ on }">
@@ -216,7 +215,7 @@
                                 <v-col>
                                 <template v-if="TipoTasa ==='Nominal'">
                                     <v-flex xs12 sm12 md12  style="display:flex;">
-                                        <v-text-field type="number" v-model="PorcentajeTasaNominal" label="Tasa Nominal" color="#000000"></v-text-field>
+                                        <v-text-field type="number" v-model="PorcentajeTasaNominal" label="Tasa Nominal %" color="#000000"></v-text-field>
 
                                         <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">
@@ -261,7 +260,7 @@
                                 <v-col>
                                 <template v-if="TipoTasa ==='Efectiva'">
                                     <v-flex xs12 sm12 md12  style="display:flex;">
-                                        <v-text-field type="number" v-model="PorcentajeTasaEfectiva" label="Tasa Efectiva" color="#000000"></v-text-field>
+                                        <v-text-field type="number" v-model="PorcentajeTasaEfectiva" label="Tasa Efectiva %" color="#000000"></v-text-field>
 
                                         <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">
@@ -315,26 +314,6 @@
                                 <v-row>
                                 <v-col>
                                 <v-flex xs12 sm12 md12  style="display:flex;">
-                                    <v-select v-model="TipoVI" :items="TipoValor" label="Valor Expresado en: " color="#000000" ></v-select>
-
-                                    <v-tooltip right>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Ingresar el monto en efectivo o en porcentaje, segun sea el caso</span>                             
-                                    </v-tooltip>
-
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-
-                                <v-spacer></v-spacer>
-
-                                <v-row>
-                                <v-col>
-                                <v-flex xs12 sm12 md12  style="display:flex;">
                                 <v-text-field type="number" v-model="ValorCosteI" label="Valor: " color="#000000"></v-text-field>
                                 </v-flex>
                                 </v-col>
@@ -361,11 +340,11 @@
                                             </td>
                                                     
                                             <td>
-                                                <v-text-field type="string" v-model="props.item.motivo"></v-text-field>
+                                                <v-text-field type="string" v-model="props.item.motivo" disabled></v-text-field>
                                             </td>
 
                                             <td>
-                                                <v-text-field type="number" v-model="props.item.valor" ></v-text-field >
+                                                <v-text-field type="number" v-model="props.item.valor" disabled></v-text-field >
                                             </td>   
                                         </template>
                                     </v-data-table>
@@ -409,26 +388,6 @@
 
                                 <v-row>
                                 <v-col>
-                                <v-flex xs12 sm12 md12  style="display:flex;">
-                                    <v-select v-model="TipoVF" :items="TipoValor" label="Valor Expresado en: " color="#000000"></v-select>
-
-                                    <v-tooltip right>
-                                    <template v-slot:activator="{ on }">
-                                    <v-layout align-center justify-space-around>
-                                    <v-icon small class="ml-2 mr-2"  color="teal darken-2" v-on="on">info</v-icon>
-                                    </v-layout>
-                                    </template>
-                                    <span>Ingresar el monto en efectivo o en porcentaje, segun sea el caso</span>                             
-                                    </v-tooltip>
-                                    
-                                </v-flex>
-                                </v-col>
-                                </v-row>
-
-                                <v-spacer></v-spacer>
-
-                                <v-row>
-                                <v-col>
                                 <v-flex xs12 sm12 md12>
                                     <v-text-field type="number" v-model="ValorCosteF" label="Valor: " color="#000000"></v-text-field>
                                 </v-flex>
@@ -451,11 +410,11 @@
                                             </td>
                                                     
                                             <td>
-                                                <v-text-field type="string" v-model="props.item.motivo"></v-text-field>
+                                                <v-text-field type="string" v-model="props.item.motivo" disabled></v-text-field>
                                             </td>
 
                                             <td>
-                                                <v-text-field type="number" v-model="props.item.valor"></v-text-field>
+                                                <v-text-field type="number" v-model="props.item.valor" disabled></v-text-field>
                                             </td>   
                                         </template>
                                     </v-data-table>
@@ -608,6 +567,8 @@ export default {
       //Solo usamos esto y agregamos al arreglo
       motivo: "",
       valor: "",
+      validar: 0,
+      add: false,
 
     };
   },
@@ -622,17 +583,47 @@ export default {
   },
   methods: {
     agregarCosteInicial( motivo1,valor1) {
-        this.CInicial.push({
-            motivo: motivo1,
-            valor: valor1
-        }); 
+        let me  = this
+        me.add = false
+        console.log(me.CInicial.length)
+        if (me.CInicial.length == 0){
+            me.add=true;
+        }else {
+         me.CInicial.forEach(element => {
+            if(element.motivo != motivo1){
+                me.add = true;
+            }
+        });
+        }
+        console.log(me.add)
+        if ( valor1 > 0 && valor1 < me.ValorNominal - me.Retencion && me.add == true ) {
+            this.CInicial.push({
+                motivo: motivo1,
+                valor: valor1
+            }); 
+        }
     },
 
     agregarCosteFinal( motivo1,valor1) {
-        this.CFinal.push({
-            motivo: motivo1,
-            valor: valor1
-        }); 
+        let me  = this
+        me.add = false
+        console.log(me.CFinal.length)
+        if (me.CFinal.length == 0){
+            me.add=true;
+        }else {
+         me.CFinal.forEach(element => {
+            if(element.motivo != motivo1){
+                me.add = true;
+            }
+        });
+        }
+        console.log(me.add)
+        if ( valor1 > 0 && valor1 < me.ValorNominal - me.Retencion && me.add == true) {
+            this.CFinal.push({
+                motivo: motivo1,
+                valor: valor1
+            }); 
+        }
      },
     
     eliminarDetalle(arr, item) {
@@ -641,11 +632,71 @@ export default {
             arr.splice(i, 1);
         }
     },
+    validaciones(){
+        let me = this
+        me.res = false
+        
+        
+        if (me.TipoTasa == "Nominal"){
+            if(me.ValorNominal > 0 && me.ValorNominal < 999999999){
+                if (me.Retencion >= 0 && me.Retencion < me.ValorNominal){
+                    if (moment(me.FechaGiro).isBefore(moment(me.FechaVencimiento))){
+                        if(moment(me.FechaDescuento).isBefore(moment(me.FechaVencimiento)) && moment(me.FechaDescuento).isAfter(moment(me.FechaGiro)) ){
+                            if(me.PorcentajeTasaNominal > 0 && me.PorcentajeTasaNominal <= 100){
+                                me.validar = 1
+                                if(me.PeriodoCapitalizacion == "Especial"){
+                                    if(me.ValorEspecialCap > 0 && me.ValorEspecialCap < 1000){
+                                        me.validar = 1;
+                                    }else{
+                                        me.validar = 0;
+                                    }
+                                }else if(me.PlazoTasa == "Especial" && me.validar == 1){
+                                    if(me.ValorEspecialPer > 0 && me.ValorEspecialPer < 1000){
+                                        me.validar = 1;
+                                    }else{
+                                        me.validar = 0;
+                                        }
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            } else {
+                me.validar = 0
+            }
+        }else{
+            if(me.ValorNominal > 0 && me.ValorNominal < 999999999){
+                if (me.Retencion >= 0 && me.Retencion < me.ValorNominal){
+                    if (moment(me.FechaGiro).isBefore(moment(me.FechaVencimiento))){
+                        if(moment(me.FechaDescuento).isBefore(moment(me.FechaVencimiento)) && moment(me.FechaDescuento).isAfter(moment(me.FechaGiro)) ){
+                            if(me.PorcentajeTasaEfectiva > 0 && me.PorcentajeTasaEfectiva <= 100){
+                                me.validar = 1
+                                if(me.PlazoTasa == "Especial"){
+                                    if(me.ValorEspecialPer > 0 && me.ValorEspecialPer < 1000){
+                                        me.validar = 1;
+                                    }else{
+                                        me.validar = 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                me.validar = 0
+            }
+        }
+
+
+
+    },
     calcular()
     {
      
         let me = this;
-        // Falta arreglar la fecha 
+        me.validaciones()
+        if (me.validar == 1) {
         var diasDif = moment(me.FechaVencimiento).diff(moment(me.FechaDescuento), "days")
         if(me.FechaVencimiento=="" || me.FechaDescuento==""||  me.ValorNominal=="" || me.PlazoTasa=="")
         {
@@ -687,12 +738,13 @@ export default {
         neto = me.ValorNominal*(1-tasaDes);
         totalR = neto - me.Retencion;
         me.CInicial.forEach(element => {
-            totalR -= element.valor;
+            totalR -= parseFloat(element.valor);
         });
         totalE = me.ValorNominal - me.Retencion;
         me.CFinal.forEach(element => {
-            totalE += element.valor; 
+            totalE += parseFloat(element.valor); 
         });
+        console.log(totalE)
 
         tcea = Math.pow((totalE/totalR),(me.DiasPorAño/diasDif))- 1;
         solesDes = me.ValorNominal * tasaDes;
@@ -707,6 +759,10 @@ export default {
         me.valorNeto = Math.round(neto * 100) / 100;;
 
         me.res = true;
+
+        //Validaciones
+        me.validar = 0
+        }
     },
   }
 };
