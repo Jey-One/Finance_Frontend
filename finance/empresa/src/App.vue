@@ -358,7 +358,6 @@ export default {
   background: black;
   color: white;
   opacity: 0.7;
-
 }
 label[for="changePro"] {
   font-family: sans-serif, 'Lucida Sans';

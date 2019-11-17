@@ -37,9 +37,7 @@ import CarteraLetras from './CarteraLetras'
 export default {
     data()
     {
-        return{
-            asdas:""
-        };
+        return 0
     },
     components:
     {
