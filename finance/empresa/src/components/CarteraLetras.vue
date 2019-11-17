@@ -806,6 +806,29 @@ export default {
             arr.splice(i, 1);
         }
     },
+    carcularCarteraCEA()
+    {
+        let me = this;
+        var letras = [];
+        var ar= 0;
+        var ab= 0;
+        var diff = 0
+        var RecibirTotal = 0;
+        var EntregarTotal=0;
+        var tceaCartera = 0
+        letras.forEach(letra => 
+        {
+            dif = moment(letra.FechaVencimiento).diff(moment(letra.FechaDescuento), "days");
+            ar += parseFloat(letra.ValorNominal)*dif;
+            ab += parseFloat(letra.ValorNominal);
+            EntregarTotal += parseFloat(letra.EntregarTotal);
+            RecibirTotal += parseFloat(letra.RecibirTotal);
+        })
+        var dias = ar/ab;
+
+        tcea = Math.pow((EntregarTotal/RecibirTotal),(360/dias)) -1
+
+    },
     calcular()
     {
         let me = this;

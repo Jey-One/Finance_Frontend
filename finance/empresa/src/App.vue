@@ -6,7 +6,7 @@
           <v-layout column align-center>
             <v-flex text-xs-center class="mt-4 mb-3">
               <v-btn style="width:90px ; height:90px;" icon class="mt-4 mb-2 prof">
-                <img class="img_pro" style="" :src=user.urlImage alt="gg" />
+                <img class="img_pro" style="" :src="user.urlImage" alt="gg" />
                 <v-icon @click="change=true" class="edit" style="position:absolute;">edit</v-icon>
               </v-btn>
               <p class="black--text subheading mt-3" style="font-weight:bold;">{{user.name}}</p>
@@ -166,7 +166,7 @@ export default {
       passErr:false,
       rules: {
           required: value => !!value || 'Requerido.',
-          min: v => v.length <= 10 || 'Max 10 caracteres',
+          min: v => v.length <= 20 || 'Max 20 caracteres',
         },
       progress:false,
       isLogin:false,
@@ -204,6 +204,7 @@ export default {
     let me = this;
     if(localStorage.getItem('session') != null)
     me.user = JSON.parse(localStorage.getItem('session'));
+  
   },
    methods: {
     isLoginMethod()
@@ -263,25 +264,27 @@ export default {
     {
     
       let me = this;
-      if(me.user.username.length == 0 && me.user.password.length == 0) 
+      if((me.user.username.length == 0 && me.user.password.length == 0) || (me.user.username.length > 20 && me.user.password.length > 20)) 
       {
         me.passErr = true;
         return;
       }
-      console.log("Gola")
       axios.get("api/users/"+me.user.username+"/"+me.user.password)
       .then(function(response)
       {
-        console.log(response.data);
+        
         let aux = response.data;
         if (aux != null && aux !="")
         {
+          me.limpiar();
           me.user = response.data;
           me.isLogin = true;
           me.dialog = false;
           localStorage.setItem("session",JSON.stringify(me.user));
           me.$router.push({name:"progress"});
-          me.limpiar();
+         
+        }else{
+          me.passErr = true;
         }
       })
       .catch(function(error)
@@ -306,6 +309,7 @@ export default {
       let me = this;
       localStorage.removeItem("session");
       me.limpiar();
+      me.$router.push({name:"home"})
     },
     register()
     {

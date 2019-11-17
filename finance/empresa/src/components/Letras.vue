@@ -26,7 +26,7 @@
                                         <template v-slot:activator="{ on }">
                                             <v-text-field v-model="FechaGiro" label="Fecha de Giro" readonly v-on="on" color="#000000"></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="FechaGiro" @input="menu1 = false" color="#0008FF"></v-date-picker>
+                                        <v-date-picker v-model="FechaGiro"  @input="menu1 = false" color="#0008FF"></v-date-picker>
                                         
                                     </v-menu>
 
@@ -54,7 +54,7 @@
                                         <template v-slot:activator="{ on }">
                                             <v-text-field v-model="FechaVencimiento" label="Fecha de Vencimiento" readonly v-on="on" color="#000000"></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="FechaVencimiento" @input="menu2 = false" color="#0008FF"></v-date-picker>
+                                        <v-date-picker v-model="FechaVencimiento" min="2019-11-18"  @input="menu2 = false" color="#0008FF"></v-date-picker>
                                     </v-menu>
 
                                     <v-tooltip bottom>
@@ -485,6 +485,18 @@
             </div>
         </div>
     </v-flex>
+
+    <div class="text-center">
+
+    <v-snackbar
+      color="red"
+      v-model="snackbar"
+      class="mb-3"
+      timeout="3000"
+    >
+      {{ text }}
+    </v-snackbar>
+  </div>
 </v-layout>
 </template>
 
@@ -499,6 +511,8 @@ export default {
       menu1: false,
       menu2: false,
       menu3: false,
+      snackbar: false,
+      text: 'Ingrese todos los datos para calcular la Letra',
       res:false,
       diasTrans: 0,
       tasaEfectiva: 0,
@@ -601,6 +615,7 @@ export default {
 
   },
   watch:{
+    
   },
 
   created() {
@@ -628,9 +643,15 @@ export default {
     },
     calcular()
     {
+     
         let me = this;
         // Falta arreglar la fecha 
         var diasDif = moment(me.FechaVencimiento).diff(moment(me.FechaDescuento), "days")
+        if(me.FechaVencimiento=="" || me.FechaDescuento==""||  me.ValorNominal=="" || me.PlazoTasa=="")
+        {
+            me.snackbar = true;
+            return;
+        }
         var tasa = 0;
         var tasaDes = 0;
         var neto = 0;
@@ -675,15 +696,15 @@ export default {
 
         tcea = Math.pow((totalE/totalR),(me.DiasPorAño/diasDif))- 1;
         solesDes = me.ValorNominal * tasaDes;
-
-        me.tcea = tcea*100;
-        me.tasaDescuento = tasaDes*100;
+        console.log(tcea)
+        me.tcea = Math.round(tcea * 1000000000) / 10000000;
+        me.tasaDescuento = Math.round(tasaDes * 1000000000) / 10000000;
         me.diasTrans = diasDif;
-        me.tasaEfectiva = tasa*100;
-        me.solesDescuento = solesDes;
-        me.valorRecibir = totalR;
-        me.valorEntregar = totalE;
-        me.valorNeto = neto;
+        me.tasaEfectiva = Math.round(tasa * 1000000000) / 10000000;
+        me.solesDescuento = Math.round(solesDes * 100) / 100;
+        me.valorRecibir = Math.round(totalR * 100) / 100;;
+        me.valorEntregar = Math.round(totalE * 100) / 100;;
+        me.valorNeto = Math.round(neto * 100) / 100;;
 
         me.res = true;
     },
